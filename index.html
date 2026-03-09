@@ -20,7 +20,7 @@
             --blob-2: #e1dfff;
             --btn-bg: #1a1c1e;
             --btn-text: #ffffff;
-            --overlay: rgba(0, 0, 0, 0.2);
+            --overlay: rgba(0, 0, 0, 0.4);
             --latest-green: #2e7d32;
         }
 
@@ -45,16 +45,47 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background-color: var(--bg-base); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
 
-        /* --- Background --- */
-        .bg-wrapper { position: fixed; inset: 0; z-index: -1; filter: blur(90px); overflow: hidden; }
-        .blob { position: absolute; width: 700px; height: 700px; border-radius: 50%; opacity: 0.6; animation: blobMove 25s infinite alternate ease-in-out; }
-        .blob-1 { background: var(--blob-1); top: -15%; left: -10%; }
-        .blob-2 { background: var(--blob-2); bottom: -15%; right: -10%; animation-delay: -7s; }
-        @keyframes blobMove { from { transform: translate(0, 0); } to { transform: translate(100px, 50px); } }
+        /* --- Optimized Background (Moving Solid Circles) --- */
+        .bg-wrapper { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
+        
+        .blob { 
+            position: absolute; 
+            width: 600px; 
+            height: 600px; 
+            border-radius: 50%; 
+            opacity: 0.6; /* High visibility */
+            pointer-events: none;
+            animation: float 20s infinite ease-in-out alternate;
+        }
+        .blob-1 { background: var(--blob-1); top: -150px; left: -150px; }
+        .blob-2 { 
+            background: var(--blob-2); 
+            bottom: -150px; 
+            right: -150px; 
+            animation-delay: -10s;
+            animation-duration: 25s;
+        }
+
+        /* GPU Accelerated floating animation */
+        @keyframes float {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(80px, 40px) rotate(5deg); }
+            100% { transform: translate(-30px, 90px) rotate(-5deg); }
+        }
 
         /* --- Sidebar & UI --- */
-        #overlay { position: fixed; inset: 0; background: var(--overlay); z-index: 999; opacity: 0; visibility: hidden; transition: 0.4s; backdrop-filter: blur(6px); }
+        #overlay { 
+            position: fixed; 
+            inset: 0; 
+            background: var(--overlay); 
+            z-index: 999; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: 0.4s; 
+            /* Removed blur for performance */
+        }
         #overlay.active { opacity: 1; visibility: visible; }
+        
         .menu-btn { position: fixed; top: 25px; left: 25px; z-index: 1001; background: var(--card-bg); border: 1px solid var(--border); padding: 12px; border-radius: 16px; cursor: pointer; backdrop-filter: blur(15px); transition: 0.3s; }
         
         .sidebar { position: fixed; top: 0; left: -320px; width: 320px; height: 100vh; background: var(--sidebar-bg); z-index: 1000; padding: 100px 25px 40px; transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1); border-right: 1px solid var(--border); overflow-y: auto; }
@@ -90,7 +121,11 @@
 </head>
 <body>
 
-    <div class="bg-wrapper"><div class="blob blob-1"></div><div class="blob blob-2"></div></div>
+    <div class="bg-wrapper">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+    
     <div id="overlay" onclick="toggleSidebar()"></div>
     <div class="menu-btn" onclick="toggleSidebar()"><i data-lucide="menu"></i></div>
 
@@ -179,7 +214,6 @@
             releases.forEach((rel, i) => {
                 const el = document.createElement('div');
                 el.className = `sidebar-item ${i === 0 ? 'active-rel' : ''}`;
-                // Now showing the Full Name in sidebar as requested
                 el.innerHTML = `<i data-lucide="box"></i> ${rel.name || rel.tag_name}`;
                 el.onclick = () => {
                     document.querySelectorAll('.sidebar-item').forEach(s => s.classList.remove('active-rel'));
