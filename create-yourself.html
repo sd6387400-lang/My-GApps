@@ -12,6 +12,7 @@
             --bg-base: #f8f9ff;
             --card-bg: rgba(255, 255, 255, 0.7);
             --text-main: #1a1c1e;
+            --text-sub: #74777f;
             --accent: #006494;
             --sidebar-bg: rgba(255, 255, 255, 0.98);
             --border: rgba(0, 0, 0, 0.05);
@@ -26,6 +27,7 @@
                 --bg-base: #0f1115;
                 --card-bg: rgba(26, 28, 30, 0.6);
                 --text-main: #e2e2e6;
+                --text-sub: #909094;
                 --accent: #91cdff;
                 --sidebar-bg: rgba(15, 17, 21, 0.98);
                 --border: rgba(255, 255, 255, 0.08);
@@ -38,6 +40,14 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background-color: var(--bg-base); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
 
+        /* Desktop/Landscape Logic */
+        @media (min-width: 992px) {
+            .sidebar { left: 0 !important; }
+            .content { margin-left: 320px !important; max-width: calc(100% - 320px) !important; padding: 60px 40px !important; }
+            .overlay { display: none !important; }
+            .menu-btn { display: none !important; }
+        }
+
         .bg-wrapper { position: fixed; inset: 0; z-index: -1; overflow: hidden; }
         .blob { position: absolute; width: 600px; height: 600px; border-radius: 50%; opacity: 0.5; animation: float 25s infinite ease-in-out alternate; }
         .blob-1 { background: var(--blob-1); top: -100px; left: -100px; }
@@ -48,19 +58,19 @@
         .overlay.active { opacity: 1; pointer-events: auto; }
 
         .menu-btn { position: fixed; top: 25px; left: 25px; z-index: 1001; background: var(--card-bg); border: 1px solid var(--border); padding: 12px; border-radius: 16px; cursor: pointer; }
-        .sidebar { position: fixed; top: 0; left: -320px; width: 320px; height: 100vh; background: var(--sidebar-bg); z-index: 1000; padding: 80px 20px; transition: 0.5s cubic-bezier(0.77, 0, 0.175, 1); border-right: 1px solid var(--border); overflow-y: auto; }
+        .sidebar { position: fixed; top: 0; left: -320px; width: 320px; height: 100vh; background: var(--sidebar-bg); z-index: 1000; padding: 40px 20px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-right: 1px solid var(--border); overflow-y: auto; }
         .sidebar.active { left: 0; }
         
         .sidebar-header { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); margin: 25px 0 10px 10px; font-weight: 800; opacity: 0.6; }
         .sidebar-item { display: flex; align-items: center; gap: 12px; color: var(--text-main); padding: 12px 15px; border-radius: 14px; cursor: pointer; text-decoration: none; font-weight: 600; margin-bottom: 4px; transition: 0.2s; border: none; background: transparent; width: 100%; text-align: left; }
         .sidebar-item:hover, .active-ver { background: var(--border); color: var(--accent); }
 
-        .content { padding: 100px 24px 120px; max-width: 850px; margin: 0 auto; }
+        .content { padding: 100px 20px 120px; max-width: 850px; margin: 0 auto; transition: 0.4s; }
         .glass-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 30px; padding: 30px; backdrop-filter: blur(10px); }
         
-        .list-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 20px; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
+        .list-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border); padding-bottom: 25px; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
         .bulk-actions { display: flex; gap: 8px; }
-        .bulk-actions button { background: var(--border); border: none; color: var(--text-main); font-weight: 700; font-size: 0.7rem; cursor: pointer; padding: 8px 12px; border-radius: 10px; transition: 0.2s; }
+        .bulk-actions button { background: var(--border); border: none; color: var(--text-main); font-weight: 800; font-size: 0.65rem; cursor: pointer; padding: 10px 16px; border-radius: 12px; transition: 0.2s; letter-spacing: 0.5px; }
         .bulk-actions button:hover { background: var(--accent); color: white; }
 
         .section-divider { font-size: 0.75rem; text-transform: uppercase; font-weight: 800; color: var(--accent); margin: 40px 0 15px 10px; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
@@ -81,18 +91,21 @@
         .gapps-item:hover { border-color: var(--accent); background: var(--border); }
         .sub-container { margin-left: 25px; border-left: 2px solid var(--border); padding-left: 15px; display: none; margin-bottom: 30px; margin-top: -5px; }
         .sub-container.visible { display: block; animation: slideIn 0.3s ease; }
-        @keyframes slideIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .gapps-info { display: flex; align-items: center; gap: 15px; flex: 1; overflow: hidden; }
+        .gapps-icon { width: 36px; height: 36px; object-fit: contain; border-radius: 8px; flex-shrink: 0; }
+        .gapps-label { display: flex; flex-direction: column; overflow: hidden; }
+        .name-main { font-weight: 700; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .name-tech { font-size: 0.7rem; font-weight: 600; color: var(--text-sub); opacity: 0.8; }
 
-        .gapps-info { display: flex; align-items: center; gap: 15px; flex: 1; }
-        .gapps-icon { width: 34px; height: 34px; object-fit: contain; border-radius: 8px; }
         .gapps-icon-fallback { 
             width: 36px; height: 36px; border-radius: 12px; display: flex; 
             align-items: center; justify-content: center; font-weight: 900; color: white; 
-            font-size: 1.1rem; box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            font-size: 1.1rem; flex-shrink: 0;
         }
 
-        .action-group { display: flex; align-items: center; gap: 12px; }
-        .dropdown-trigger { opacity: 0; pointer-events: none; transition: 0.3s; }
+        .action-group { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        .dropdown-trigger { opacity: 0; pointer-events: none; transition: 0.3s; color: var(--text-sub); }
         .dropdown-trigger.has-sub { opacity: 0.4; pointer-events: auto; }
         .dropdown-trigger.active-sub { opacity: 1; color: var(--accent); transform: rotate(180deg); }
         .gapps-item.disabled { opacity: 0.4; pointer-events: none; filter: grayscale(1); }
@@ -104,8 +117,13 @@
         input:checked + .slider { background-color: var(--accent); }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        .fab { position: fixed; bottom: 30px; right: 30px; background: var(--text-main); color: var(--bg-base); padding: 20px 35px; border-radius: 25px; font-weight: 800; border: none; cursor: pointer; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 100; }
+        .fab { position: fixed; bottom: 30px; right: 30px; background: var(--text-main); color: var(--bg-base); padding: 20px 35px; border-radius: 25px; font-weight: 800; border: none; cursor: pointer; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 100; transition: 0.2s; }
+        .fab:hover { transform: translateY(-3px); }
         #config-input { display: none; }
+        
+        #conf-ver-badge { font-size: 0.65rem; background: var(--accent); color: white; padding: 2px 8px; border-radius: 6px; font-weight: 800; margin-left: 8px; vertical-align: middle; }
+
+        @keyframes slideIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -114,11 +132,16 @@
     <div class="menu-btn" onclick="toggleSidebar()"><i data-lucide="menu"></i></div>
 
     <nav class="sidebar" id="sidebar">
+        <div style="margin-bottom: 40px; padding-left: 10px;">
+            <h2 style="font-weight: 900; letter-spacing: -1px; font-size: 1.4rem; color: var(--accent);">NikGApps</h2>
+            <p style="font-size: 0.65rem; font-weight: 800; opacity: 0.5;">CONFIGURATOR PRO</p>
+        </div>
+
         <div class="sidebar-header">General</div>
         <div class="sidebar-item" onclick="location.reload()"><i data-lucide="home"></i> Home</div>
-        <a href="gapps.html" class="sidebar-item"><i data-lucide="globe"></i> Go to Gapps Site</a>
+        <a href="https://nikgapps.com" target="_blank" class="sidebar-item"><i data-lucide="globe"></i> Gapps Site</a>
         <div class="sidebar-item"><i data-lucide="layout"></i> Creations</div>
-        <label class="sidebar-item" for="config-input">
+        <label class="sidebar-item" style="cursor: pointer;">
             <i data-lucide="upload-cloud"></i> Import Config
             <input type="file" id="config-input" accept=".conf,.txt" onchange="analyzeConfig(this)">
         </label>
@@ -131,10 +154,11 @@
         <div class="glass-card">
             <div class="list-header">
                 <div>
-                    <h1 id="title-os" style="letter-spacing:-1.5px; font-weight: 800;">Android 16</h1>
-                    <div style="display:flex; align-items:center; gap:4px;">
-                        <input type="text" id="file-name" value="nikgapps" style="background:transparent; border:none; color:var(--accent); font-weight:800; font-size:1rem; outline:none; width: 100px;">
-                        <span style="opacity:0.5; font-weight:800;">.conf</span>
+                    <h1 id="title-os" style="letter-spacing:-1.5px; font-weight: 800; font-size: 2.2rem; line-height: 1;">Android 16</h1>
+                    <div style="margin-top: 8px; display:flex; align-items:center;">
+                        <input type="text" id="file-name" value="nikgapps" style="background:transparent; border:none; color:var(--accent); font-weight:800; font-size:0.9rem; outline:none; width: 85px;">
+                        <span style="opacity:0.4; font-weight:800; font-size:0.9rem;">.conf</span>
+                        <span id="conf-ver-badge">V--</span>
                     </div>
                 </div>
                 <div class="bulk-actions">
@@ -163,6 +187,7 @@
         const ignoredKeys = ["AndroidVersion", "Version", "LogDirectory", "InstallPartition", "Mode", "WipeDalvikCache", "WipeRuntimePermissions", "ExecuteBackupRestore", "UseZipConfig", "OverwriteWithZipConfig", "GmsOptimization", "GenerateLogs"];
 
         function toggleSidebar() { 
+            if(window.innerWidth >= 992) return;
             const sb = document.getElementById('sidebar');
             const ov = document.getElementById('overlay');
             sb.classList.toggle('active');
@@ -184,7 +209,7 @@
             el.classList.add('active-ver');
             document.getElementById('title-os').innerText = `Android ${ver}`;
             loadTemplate(ver);
-            if(window.innerWidth < 960) toggleSidebar();
+            if(window.innerWidth < 992) toggleSidebar();
         }
 
         async function loadTemplate(ver) {
@@ -194,6 +219,11 @@
                     if (res.ok) {
                         const text = await res.text();
                         templateData = text.split('\n');
+                        
+                        // Extract Version
+                        const verLine = templateData.find(l => l.startsWith('Version='));
+                        if(verLine) document.getElementById('conf-ver-badge').innerText = `V${verLine.split('=')[1]}`;
+                        
                         renderSmartList();
                         return;
                     }
@@ -217,7 +247,11 @@
             return slug ? `https://www.gstatic.com/images/branding/product/2x/${slug}_96dp.png` : null;
         }
 
-        // Logic to try multiple formats before giving up
+        function formatName(text) {
+            // Adds spaces before capitals: PixelLauncher -> Pixel Launcher
+            return text.replace(/([A-Z])/g, ' $1').trim();
+        }
+
         function tryLocal(img, name, color) {
             const formats = ['.png', '.jpg', '.jpeg', '.webp'];
             let currentIdx = formats.indexOf(img.getAttribute('data-ext')) || 0;
@@ -227,7 +261,6 @@
                 img.setAttribute('data-ext', nextExt);
                 img.src = `icons/${name}${nextExt}`;
             } else {
-                // Done with local, try online
                 const online = getOfficialIcon(name);
                 if (online && img.src !== online) {
                     img.src = online;
@@ -262,8 +295,8 @@
 
                     if (!ignoredKeys.includes(cleanKey)) {
                         const bgColor = googleColors[cleanKey.length % 4];
+                        const cleanName = formatName(cleanKey);
                         
-                        // Icon setup: Start with .png, use data-ext to track progress in tryLocal
                         const iconHtml = `<img src="icons/${cleanKey}.png" data-ext=".png" class="gapps-icon" 
                             onerror="tryLocal(this, '${cleanKey}', '${bgColor}')">`;
 
@@ -271,7 +304,10 @@
                             <div class="gapps-item ${isSub ? 'disabled sub-row' : 'parent-row'}" id="row-${i}" onclick="handleCardClick(${i}, ${isSub})">
                                 <div class="gapps-info">
                                     ${iconHtml}
-                                    <span style="font-weight:700;">${cleanKey}</span>
+                                    <div class="gapps-label">
+                                        <span class="name-main">${cleanName}</span>
+                                        <span class="name-tech">${cleanKey}</span>
+                                    </div>
                                 </div>
                                 <div class="action-group">
                                     ${!isSub ? `<i data-lucide="chevron-down" class="dropdown-trigger" id="drop-${i}"></i>` : ''}
