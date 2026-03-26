@@ -124,6 +124,17 @@
         #conf-ver-badge { font-size: 0.65rem; background: var(--accent); color: white; padding: 2px 8px; border-radius: 6px; font-weight: 800; margin-left: 8px; vertical-align: middle; }
 
         @keyframes slideIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        .sidebar {
+            /* ... your existing styles ... */
+            display: flex;
+            flex-direction: column;
+        }
+        
+        /* Add this to push the last items down */
+        .sidebar-header:last-of-type {
+            margin-top: auto;
+        }
+
     </style>
 </head>
 <body>
@@ -148,6 +159,24 @@
 
         <div class="sidebar-header">Android Versions</div>
         <div id="os-list"></div>
+        <div class="sidebar-header">Support & Community</div>
+        
+        <a href="https://github.com/sd6387400-lang/My-GApps/issues/new?title=[BUG]%20&body=Describe%20the%20issue%20here:%0A%0AAndroid%20Version:%0AConfig%20Version:" target="_blank" class="sidebar-item">
+            <i data-lucide="bug"></i> Report an Issue
+        </a>
+
+        
+        <a href="mailto:pratyush.qwerty7@gmail.com?subject=NikGApps Feedback&body=Device Model:%0D%0AAndroid Version:%0D%0AFeedBack:%0D%0A" class="sidebar-item">
+            <i data-lucide="message-square"></i> Send Feedback
+        </a>
+
+        
+        <div style="padding: 20px 15px; opacity: 0.4; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.5px;">
+            NIKGAPPS CONFIGURATOR<br>
+            BUILD 2026.03.26
+        </div>
+
+
     </nav>
 
     <div class="content">
