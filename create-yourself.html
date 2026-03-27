@@ -40,7 +40,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background-color: var(--bg-base); color: var(--text-main); min-height: 100vh; overflow-x: hidden; }
 
-        /* Desktop/Landscape Logic */
         @media (min-width: 992px) {
             .sidebar { left: 0 !important; }
             .content { margin-left: 320px !important; max-width: calc(100% - 320px) !important; padding: 60px 40px !important; }
@@ -57,8 +56,9 @@
         .overlay { position: fixed; inset: 0; background: var(--overlay-bg); opacity: 0; pointer-events: none; transition: 0.3s ease; z-index: 999; }
         .overlay.active { opacity: 1; pointer-events: auto; }
 
-        .menu-btn { position: fixed; top: 25px; left: 25px; z-index: 1001; background: var(--card-bg); border: 1px solid var(--border); padding: 12px; border-radius: 16px; cursor: pointer; }
-        .sidebar { position: fixed; top: 0; left: -320px; width: 320px; height: 100vh; background: var(--sidebar-bg); z-index: 1000; padding: 40px 20px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-right: 1px solid var(--border); overflow-y: auto; }
+        .menu-btn { position: fixed; top: 25px; left: 25px; z-index: 1000; background: var(--card-bg); border: 1px solid var(--border); padding: 12px; border-radius: 16px; cursor: pointer; transition: 0.3s; }
+        
+        .sidebar { position: fixed; top: 0; left: -320px; width: 320px; height: 100vh; background: var(--sidebar-bg); z-index: 1001; padding: 40px 20px; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1); border-right: 1px solid var(--border); overflow-y: auto; display: flex; flex-direction: column; }
         .sidebar.active { left: 0; }
         
         .sidebar-header { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); margin: 25px 0 10px 10px; font-weight: 800; opacity: 0.6; }
@@ -73,42 +73,42 @@
         .bulk-actions button { background: var(--border); border: none; color: var(--text-main); font-weight: 800; font-size: 0.65rem; cursor: pointer; padding: 10px 16px; border-radius: 12px; transition: 0.2s; letter-spacing: 0.5px; }
         .bulk-actions button:hover { background: var(--accent); color: white; }
 
-        .section-divider { font-size: 0.75rem; text-transform: uppercase; font-weight: 800; color: var(--accent); margin: 40px 0 15px 10px; letter-spacing: 1px; display: flex; align-items: center; gap: 10px; }
+        .search-wrapper { position: relative; margin-bottom: 20px; }
+        .search-wrapper i { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); opacity: 0.4; }
+        #app-search { width: 100%; padding: 14px 14px 14px 45px; border-radius: 16px; border: 1px solid var(--border); background: var(--bg-base); color: var(--text-main); font-weight: 600; outline: none; transition: 0.3s; }
+
+        .section-divider { display: flex; align-items: center; gap: 15px; margin: 30px 0 15px; color: var(--accent); font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; }
         .section-divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
 
+        .wrapper-div { width: 100%; display: flex; flex-direction: column; }
         .gapps-item { 
             display: flex; align-items: center; justify-content: space-between; 
             padding: 16px 20px; background: var(--card-bg); border: 1px solid var(--border); 
             border-radius: 20px; transition: 0.2s; cursor: pointer; margin-bottom: 10px;
-            position: relative; z-index: 2;
+            position: relative; z-index: 2; width: 100%;
         }
         
+        .gapps-item.disabled-visual { opacity: 0.3; filter: grayscale(1); pointer-events: none !important; }
+
         .has-children-ui::before {
             content: ''; position: absolute; top: 4px; left: 10px; right: 10px; bottom: -6px;
             background: var(--card-bg); border: 1px solid var(--border); border-radius: 20px; z-index: -1; opacity: 0.4;
         }
 
-        .gapps-item:hover { border-color: var(--accent); background: var(--border); }
-        .sub-container { margin-left: 25px; border-left: 2px solid var(--border); padding-left: 15px; display: none; margin-bottom: 30px; margin-top: -5px; }
-        .sub-container.visible { display: block; animation: slideIn 0.3s ease; }
-        
         .gapps-info { display: flex; align-items: center; gap: 15px; flex: 1; overflow: hidden; }
         .gapps-icon { width: 36px; height: 36px; object-fit: contain; border-radius: 8px; flex-shrink: 0; }
-        .gapps-label { display: flex; flex-direction: column; overflow: hidden; }
-        .name-main { font-weight: 700; font-size: 0.95rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .name-tech { font-size: 0.7rem; font-weight: 600; color: var(--text-sub); opacity: 0.8; }
+        .gapps-icon-fallback { width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-weight: 800; font-size: 1.2rem; flex-shrink: 0; text-transform: uppercase; }
+        
+        .name-main { font-weight: 700; font-size: 0.95rem; display: block; }
+        .name-tech { font-size: 0.7rem; font-weight: 600; color: var(--text-sub); }
 
-        .gapps-icon-fallback { 
-            width: 36px; height: 36px; border-radius: 12px; display: flex; 
-            align-items: center; justify-content: center; font-weight: 900; color: white; 
-            font-size: 1.1rem; flex-shrink: 0;
-        }
-
-        .action-group { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
+        .sub-container { margin-left: 25px; border-left: 2px solid var(--border); padding-left: 15px; display: none; margin-bottom: 30px; margin-top: -5px; width: calc(100% - 25px); }
+        .sub-container.visible { display: flex; flex-direction: column; animation: slideIn 0.3s ease; }
+        
+        .action-group { display: flex; align-items: center; gap: 12px; }
         .dropdown-trigger { opacity: 0; pointer-events: none; transition: 0.3s; color: var(--text-sub); }
         .dropdown-trigger.has-sub { opacity: 0.4; pointer-events: auto; }
         .dropdown-trigger.active-sub { opacity: 1; color: var(--accent); transform: rotate(180deg); }
-        .gapps-item.disabled { opacity: 0.4; pointer-events: none; filter: grayscale(1); }
 
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -116,84 +116,77 @@
         .slider:before { position: absolute; content: ""; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
         input:checked + .slider { background-color: var(--accent); }
         input:checked + .slider:before { transform: translateX(20px); }
+        input:disabled + .slider { cursor: not-allowed; opacity: 0.5; }
 
         .fab { position: fixed; bottom: 30px; right: 30px; background: var(--text-main); color: var(--bg-base); padding: 20px 35px; border-radius: 25px; font-weight: 800; border: none; cursor: pointer; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.3); z-index: 100; transition: 0.2s; }
-        .fab:hover { transform: translateY(-3px); }
-        #config-input { display: none; }
+
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(8px); display: none; align-items: center; justify-content: center; z-index: 2000; }
+        .modal-card { background: var(--sidebar-bg); width: 92%; max-width: 480px; border-radius: 28px; padding: 35px; position: relative; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 25px 50px rgba(0,0,0,0.25); }
+        .modal-close { position: absolute; top: 20px; right: 20px; cursor: pointer; opacity: 0.5; transition: 0.3s; z-index: 10; }
         
-        #conf-ver-badge { font-size: 0.65rem; background: var(--accent); color: white; padding: 2px 8px; border-radius: 6px; font-weight: 800; margin-left: 8px; vertical-align: middle; }
+        .step-viewport { overflow: hidden; width: 100%; margin-top: 10px; }
+        .step-container { display: flex; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); width: 700%; }
+        .step-page { width: 14.285%; flex-shrink: 0; opacity: 0; transition: opacity 0.4s; padding: 5px; }
+        .step-page.active { opacity: 1; }
+        
+        .modal-btns { display: flex; gap: 12px; margin-top: 30px; }
+        .modal-btn { flex: 1; padding: 14px; border-radius: 14px; border: none; font-weight: 800; cursor: pointer; background: var(--border); color: var(--text-main); transition: 0.2s; text-align: center; text-decoration: none; font-size: 0.9rem; }
+        .modal-btn.primary { background: var(--accent); color: white; }
 
         @keyframes slideIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
-        .sidebar {
-            /* ... your existing styles ... */
-            display: flex;
-            flex-direction: column;
-        }
-        
-        /* Add this to push the last items down */
-        .sidebar-header:last-of-type {
-            margin-top: auto;
-        }
-
     </style>
 </head>
 <body>
     <div class="bg-wrapper"><div class="blob blob-1"></div><div class="blob blob-2"></div></div>
     <div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
-    <div class="menu-btn" onclick="toggleSidebar()"><i data-lucide="menu"></i></div>
 
     <nav class="sidebar" id="sidebar">
-        <div style="margin-bottom: 40px; padding-left: 10px;">
+        <div style="margin-bottom: 30px; padding-left: 10px;">
             <h2 style="font-weight: 900; letter-spacing: -1px; font-size: 1.4rem; color: var(--accent);">NikGApps</h2>
             <p style="font-size: 0.65rem; font-weight: 800; opacity: 0.5;">CONFIGURATOR PRO</p>
         </div>
 
         <div class="sidebar-header">General</div>
         <div class="sidebar-item" onclick="location.reload()"><i data-lucide="home"></i> Home</div>
-        <a href="index.html" target="_blank" class="sidebar-item"><i data-lucide="globe"></i> Gapps Site</a>
-        <div class="sidebar-item"><i data-lucide="layout"></i> Creations</div>
+        <a href="https://nikgapps.com" target="_blank" class="sidebar-item"><i data-lucide="globe"></i> Gapps Site</a>
+        <div class="sidebar-item" onclick="window.location.href='index.html'"><i data-lucide="palette"></i> Creations</div>
         <label class="sidebar-item" style="cursor: pointer;">
             <i data-lucide="upload-cloud"></i> Import Config
-            <input type="file" id="config-input" accept=".conf,.txt" onchange="analyzeConfig(this)">
+            <input type="file" id="config-input" style="display:none" accept=".config,.txt" onchange="analyzeConfig(this)">
         </label>
 
         <div class="sidebar-header">Android Versions</div>
         <div id="os-list"></div>
-        <div class="sidebar-header">Support & Community</div>
-        
-        <a href="https://github.com/sd6387400-lang/My-GApps/issues/new?title=[BUG]%20&body=Describe%20the%20issue%20here:%0A%0AAndroid%20Version:%0AConfig%20Version:" target="_blank" class="sidebar-item">
-            <i data-lucide="bug"></i> Report an Issue
-        </a>
 
-        
-        <a href="mailto:pratyush.qwerty7@gmail.com?subject=NikGApps Feedback&body=Device Model:%0D%0AAndroid Version:%0D%0AFeedBack:%0D%0A" class="sidebar-item">
-            <i data-lucide="message-square"></i> Send Feedback
-        </a>
-
-        
-        <div style="padding: 20px 15px; opacity: 0.4; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.5px;">
-            NIKGAPPS CONFIGURATOR<br>
-            BUILD 2026.03.26
+        <div style="margin-top: auto;">
+            <div class="sidebar-header">Support</div>
+            <a href="https://github.com/sd6387400-lang/My-GApps/issues/new" target="_blank" class="sidebar-item"><i data-lucide="bug"></i> Report Issue</a>
+            <a href="mailto:nikgapps@gmail.com" class="sidebar-item"><i data-lucide="message-square"></i> Send Feedback</a>
         </div>
-
-
     </nav>
+
+    <div class="menu-btn" onclick="toggleSidebar()"><i data-lucide="menu"></i></div>
 
     <div class="content">
         <div class="glass-card">
             <div class="list-header">
                 <div>
-                    <h1 id="title-os" style="letter-spacing:-1.5px; font-weight: 800; font-size: 2.2rem; line-height: 1;">Android 16</h1>
+                    <h1 id="title-os" style="letter-spacing:-1.5px; font-weight: 800; font-size: 2.2rem; line-height: 1.1;">Android 16</h1>
                     <div style="margin-top: 8px; display:flex; align-items:center;">
                         <input type="text" id="file-name" value="nikgapps" style="background:transparent; border:none; color:var(--accent); font-weight:800; font-size:0.9rem; outline:none; width: 85px;">
-                        <span style="opacity:0.4; font-weight:800; font-size:0.9rem;">.conf</span>
-                        <span id="conf-ver-badge">V--</span>
+                        <span style="opacity:0.4; font-weight:800; font-size:0.9rem;">.config</span>
+                        <span id="conf-ver-badge" style="font-size: 0.65rem; background: var(--accent); color: white; padding: 2px 8px; border-radius: 6px; font-weight: 800; margin-left: 8px;">V--</span>
                     </div>
                 </div>
                 <div class="bulk-actions">
                     <button onclick="bulkToggle(true)">SELECT ALL</button>
                     <button onclick="bulkToggle(false)">CLEAR ALL</button>
                 </div>
+            </div>
+
+            <div class="search-wrapper">
+                <i data-lucide="search"></i>
+                <input type="text" id="app-search" placeholder="Search apps or packages..." oninput="filterApps()">
             </div>
 
             <div id="section-packages">
@@ -205,10 +198,59 @@
                 <div class="section-divider">Individual Apps</div>
                 <div id="list-apps"></div>
             </div>
+            <p id="no-results" style="display:none; text-align:center; padding: 40px; opacity: 0.5; font-weight: 700;">No results found</p>
         </div>
     </div>
 
     <button class="fab" onclick="buildConfig()"><i data-lucide="download"></i> Generate Config</button>
+
+    <div class="modal-overlay" id="guidance-modal">
+        <div class="modal-card">
+            <div class="modal-close" onclick="closeModal()"><i data-lucide="x"></i></div>
+            <div class="step-viewport">
+                <div class="step-container" id="step-slider">
+                    <div class="step-page active">
+                        <h2 style="color:var(--accent); margin-bottom:15px; font-weight:800;">Success! 🚀</h2>
+                        <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Your configuration file has been generated. Ready to move to the next step?</p>
+                        <div class="modal-btns">
+                            <button class="modal-btn primary" onclick="moveStep(1)">Start Tutorial</button>
+                        </div>
+                    </div>
+                    <div class="step-page">
+                        <h2 style="margin-bottom:10px; font-weight:800;">Step 1: Open GitHub</h2>
+                        <p style="font-size:0.9rem; line-height:1.4; opacity:0.8; margin-bottom:15px;">Login to GitHub and open the NikGApps repository.</p>
+                        <a href="https://github.com/NikGApps/Config" target="_blank" class="modal-btn primary" style="display:block; margin-bottom:20px;">Open NikGApps Repo →</a>
+                        <div class="modal-btns"><button class="modal-btn" onclick="moveStep(0)">Back</button><button class="modal-btn primary" onclick="moveStep(2)">Next</button></div>
+                    </div>
+                    <div class="step-page">
+                        <h2 style="margin-bottom:15px; font-weight:800;">Step 2: Forking</h2>
+                        <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Click the 'Fork' button to create your own copy of the repository.</p>
+                        <div class="modal-btns"><button class="modal-btn" onclick="moveStep(1)">Back</button><button class="modal-btn primary" onclick="moveStep(3)">Next</button></div>
+                    </div>
+                    <div class="step-page">
+                        <h2 style="margin-bottom:15px; font-weight:800;">Step 3: Branching</h2>
+                        <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">(Optional) Create a new branch named 'my-config' for your changes.</p>
+                        <div class="modal-btns"><button class="modal-btn" onclick="moveStep(2)">Back</button><button class="modal-btn primary" onclick="moveStep(4)">Next</button></div>
+                    </div>
+                    <div class="step-page">
+                        <h2 style="margin-bottom:15px; font-weight:800;">Step 4: Uploading</h2>
+                        <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Go to your Android folder and upload your new .config file.</p>
+                        <div class="modal-btns"><button class="modal-btn" onclick="moveStep(3)">Back</button><button class="modal-btn primary" onclick="moveStep(5)">Next</button></div>
+                    </div>
+                    <div class="step-page">
+                        <h2 style="margin-bottom:15px; font-weight:800;">Step 5: Commit</h2>
+                        <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Write a message like "Update my config" and commit the changes.</p>
+                        <div class="modal-btns"><button class="modal-btn" onclick="moveStep(4)">Back</button><button class="modal-btn primary" onclick="moveStep(6)">Next</button></div>
+                    </div>
+                    <div class="step-page">
+                        <h2 style="margin-bottom:15px; font-weight:800;">Final Step</h2>
+                        <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Submit a Pull Request. The maintainers will review your config! 🎉</p>
+                        <div class="modal-btns"><button class="modal-btn" onclick="moveStep(5)">Back</button><button class="modal-btn primary" onclick="closeModal()">Done!</button></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         let templateData = [];
@@ -216,11 +258,11 @@
         const ignoredKeys = ["AndroidVersion", "Version", "LogDirectory", "InstallPartition", "Mode", "WipeDalvikCache", "WipeRuntimePermissions", "ExecuteBackupRestore", "UseZipConfig", "OverwriteWithZipConfig", "GmsOptimization", "GenerateLogs"];
 
         function toggleSidebar() { 
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
             if(window.innerWidth >= 992) return;
-            const sb = document.getElementById('sidebar');
-            const ov = document.getElementById('overlay');
-            sb.classList.toggle('active');
-            ov.classList.toggle('active');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
         }
 
         const osList = [16,15,14,13,12,11,10];
@@ -244,15 +286,12 @@
         async function loadTemplate(ver) {
             for (let v = 45; v >= 30; v--) {
                 try {
-                    const res = await fetch(`./template${ver}/${v}.conf`);
+                    const res = await fetch(`./template${ver}/${v}.config`);
                     if (res.ok) {
                         const text = await res.text();
                         templateData = text.split('\n');
-                        
-                        // Extract Version
                         const verLine = templateData.find(l => l.startsWith('Version='));
                         if(verLine) document.getElementById('conf-ver-badge').innerText = `V${verLine.split('=')[1]}`;
-                        
                         renderSmartList();
                         return;
                     }
@@ -260,52 +299,50 @@
             }
         }
 
-        function getOfficialIcon(name) {
-            const mapping = {
-                'GooglePlayStore': 'play_prism', 'PlayStore': 'play_prism', 'GmsCore': 'googleg', 'GooglePhotos': 'photos',
-                'YouTube': 'youtube', 'YouTubeMusic': 'youtube_music', 'Gmail': 'gmail', 'GoogleMaps': 'maps',
-                'GoogleChrome': 'chrome', 'Drive': 'drive', 'GBoard': 'gboard', 'GoogleCalendar': 'calendar',
-                'GoogleKeep': 'keep', 'FilesGoogle': 'files', 'GoogleMessages': 'messages', 'GoogleDialer': 'contacts',
-                'DigitalWellbeing': 'wellbeing', 'GoogleSearch': 'googleg', 'Gemini': 'googleg', 'Velvet': 'googleg',
-                'GoogleWallet': 'wallet', 'GoogleOne': 'google_one', 'Meet': 'meet', 'GoogleRecorder': 'recorder',
-                'PixelLauncher': 'pixel_launcher', 'DevicePersonalizationServices': 'personalization', 'QuickAccessWallet': 'wallet',
-                'SetupWizard': 'googleg', 'GoogleContacts': 'contacts', 'GoogleClock': 'clock', 'GoogleHome': 'home'
-            };
-            if(name === 'DigitalWellbeing') return 'https://www.gstatic.com/images/branding/product/2x/wellbeing_96dp.png';
-            const slug = mapping[name];
-            return slug ? `https://www.gstatic.com/images/branding/product/2x/${slug}_96dp.png` : null;
-        }
+        function formatName(text) { return text.replace(/([A-Z])/g, ' $1').trim(); }
 
-        function formatName(text) {
-            // Adds spaces before capitals: PixelLauncher -> Pixel Launcher
-            return text.replace(/([A-Z])/g, ' $1').trim();
-        }
-
-        function tryLocal(img, name, color) {
-            const formats = ['.png', '.jpg', '.jpeg', '.webp'];
-            let currentIdx = formats.indexOf(img.getAttribute('data-ext')) || 0;
+        function handleIconError(img, cleanKey) {
+            // FIXED: Added .jpeg support and improved rotation logic
+            const formats = ['png', 'jpg', 'jpeg', 'webp', 'svg'];
+            let currentIdx = parseInt(img.getAttribute('data-fmt-idx') || "0");
             
-            if (currentIdx < formats.length - 1) {
-                const nextExt = formats[currentIdx + 1];
-                img.setAttribute('data-ext', nextExt);
-                img.src = `icons/${name}${nextExt}`;
+            if (currentIdx < formats.length) {
+                const nextFormat = formats[currentIdx];
+                img.setAttribute('data-fmt-idx', currentIdx + 1);
+                img.src = `./icons/${cleanKey}.${nextFormat}`;
+            } else if (!img.src.includes('gstatic')) {
+                // Try GStatic fallback before going to letter-fallback
+                img.src = `https://www.gstatic.com/images/branding/product/2x/${cleanKey.toLowerCase().replace(/google/g, '')}_64dp.png`;
             } else {
-                const online = getOfficialIcon(name);
-                if (online && img.src !== online) {
-                    img.src = online;
-                    img.onerror = () => fallbackToLetter(img, name, color);
-                } else {
-                    fallbackToLetter(img, name, color);
-                }
+                // Final fallback: Letter icon
+                const bgColor = googleColors[cleanKey.length % 4];
+                img.outerHTML = `<div class="gapps-icon-fallback" style="background:${bgColor}">${cleanKey[0]}</div>`;
             }
         }
 
-        function fallbackToLetter(img, name, color) {
-            const fallback = document.createElement('div');
-            fallback.className = 'gapps-icon-fallback';
-            fallback.style.background = color;
-            fallback.innerText = name[0];
-            img.replaceWith(fallback);
+        function filterApps() {
+            const query = document.getElementById('app-search').value.toLowerCase();
+            const items = document.querySelectorAll('.gapps-item');
+            let found = false;
+
+            items.forEach(item => {
+                const mainName = item.querySelector('.name-main').innerText.toLowerCase();
+                const techName = item.querySelector('.name-tech').innerText.toLowerCase();
+                const wrapper = item.closest('.wrapper-div') || item;
+                const subContainer = wrapper.nextElementSibling;
+                
+                if (mainName.includes(query) || techName.includes(query)) {
+                    wrapper.style.display = 'flex';
+                    if (subContainer && subContainer.classList.contains('sub-container')) {
+                        subContainer.style.display = subContainer.classList.contains('visible') ? 'flex' : 'none';
+                    }
+                    found = true;
+                } else {
+                    wrapper.style.display = 'none';
+                    if (subContainer && subContainer.classList.contains('sub-container')) subContainer.style.display = 'none';
+                }
+            });
+            document.getElementById('no-results').style.display = found ? 'none' : 'block';
         }
 
         function renderSmartList() {
@@ -323,25 +360,19 @@
                     const cleanKey = rawKey.replace(/>/g, '');
 
                     if (!ignoredKeys.includes(cleanKey)) {
-                        const bgColor = googleColors[cleanKey.length % 4];
-                        const cleanName = formatName(cleanKey);
-                        
-                        const iconHtml = `<img src="icons/${cleanKey}.png" data-ext=".png" class="gapps-icon" 
-                            onerror="tryLocal(this, '${cleanKey}', '${bgColor}')">`;
-
                         const itemHtml = `
-                            <div class="gapps-item ${isSub ? 'disabled sub-row' : 'parent-row'}" id="row-${i}" onclick="handleCardClick(${i}, ${isSub})">
+                            <div class="gapps-item ${isSub ? 'sub-row disabled-visual' : 'parent-row'}" id="row-${i}" onclick="handleCardClick(${i}, ${isSub})">
                                 <div class="gapps-info">
-                                    ${iconHtml}
+                                    <img src="./icons/${cleanKey}.png" class="gapps-icon" onerror="handleIconError(this, '${cleanKey}')">
                                     <div class="gapps-label">
-                                        <span class="name-main">${cleanName}</span>
+                                        <span class="name-main">${formatName(cleanKey)}</span>
                                         <span class="name-tech">${cleanKey}</span>
                                     </div>
                                 </div>
                                 <div class="action-group">
                                     ${!isSub ? `<i data-lucide="chevron-down" class="dropdown-trigger" id="drop-${i}"></i>` : ''}
                                     <label class="switch" onclick="event.stopPropagation()">
-                                        <input type="checkbox" id="check-${i}" data-key="${rawKey}" data-clean="${cleanKey}" onchange="handleToggle(${i}, ${isSub})">
+                                        <input type="checkbox" id="check-${i}" data-key="${rawKey}" ${isSub ? 'disabled' : ''} onchange="handleToggle(${i}, ${isSub})">
                                         <span class="slider"></span>
                                     </label>
                                 </div>
@@ -350,11 +381,11 @@
 
                         if (!isSub) {
                             const wrapper = document.createElement('div');
+                            wrapper.className = 'wrapper-div';
                             wrapper.id = `wrapper-${i}`;
                             wrapper.innerHTML = itemHtml;
                             appList.appendChild(wrapper);
                             lastParentId = i;
-
                             currentSubContainer = document.createElement('div');
                             currentSubContainer.className = 'sub-container';
                             currentSubContainer.id = `sub-of-${i}`;
@@ -363,13 +394,11 @@
                             const subItem = document.createElement('div');
                             subItem.innerHTML = itemHtml;
                             currentSubContainer.appendChild(subItem.firstElementChild);
-                            
                             const parentRow = document.getElementById(`row-${lastParentId}`);
-                            const parentWrapper = document.getElementById(`wrapper-${lastParentId}`);
                             if(parentRow) {
                                 parentRow.classList.add('has-children-ui');
                                 document.getElementById(`drop-${lastParentId}`).classList.add('has-sub');
-                                pkgList.appendChild(parentWrapper);
+                                pkgList.appendChild(document.getElementById(`wrapper-${lastParentId}`));
                                 pkgList.appendChild(currentSubContainer);
                             }
                         }
@@ -381,25 +410,18 @@
 
         function handleToggle(index, isSub) {
             const checkbox = document.getElementById(`check-${index}`);
-            const cleanKey = checkbox.getAttribute('data-clean');
-
-            if (checkbox.checked) {
-                if (cleanKey === "SetupWizard") {
-                    const other = document.querySelector('input[data-clean="PixelSetupWizard"]');
-                    if(other) other.checked = false;
-                } else if (cleanKey === "PixelSetupWizard") {
-                    const other = document.querySelector('input[data-clean="SetupWizard"]');
-                    if(other) other.checked = false;
-                }
-            }
-
             if (!isSub) {
                 const subGroup = document.getElementById(`sub-of-${index}`);
                 if (subGroup) {
-                    const children = subGroup.querySelectorAll('input');
-                    children.forEach(child => {
+                    subGroup.querySelectorAll('input').forEach(child => {
+                        child.disabled = !checkbox.checked;
                         child.checked = checkbox.checked;
-                        child.closest('.gapps-item').classList.toggle('disabled', !checkbox.checked);
+                        const row = child.closest('.gapps-item');
+                        if (checkbox.checked) {
+                            row.classList.remove('disabled-visual');
+                        } else {
+                            row.classList.add('disabled-visual');
+                        }
                     });
                 }
             }
@@ -412,15 +434,15 @@
             if (subGroup && subGroup.children.length > 0) {
                 const isVisible = subGroup.classList.toggle('visible');
                 chevron.classList.toggle('active-sub', isVisible);
+                subGroup.style.display = isVisible ? 'flex' : 'none';
             }
         }
 
         function bulkToggle(state) {
-            document.querySelectorAll('input[type="checkbox"]').forEach(input => {
+            document.querySelectorAll('.parent-row input[type="checkbox"]').forEach(input => {
                 input.checked = state;
-                const row = input.closest('.gapps-item');
                 const id = input.id.split('-')[1];
-                if (!row.classList.contains('sub-row')) handleToggle(id, false);
+                handleToggle(id, false);
             });
         }
 
@@ -430,13 +452,14 @@
             reader.onload = (e) => {
                 const lines = e.target.result.split('\n');
                 lines.forEach(line => {
-                    if(line.includes('=') && !line.startsWith('#')) {
+                    if(line.includes('=')) {
                         const [key, val] = line.split('=');
                         const targetInput = document.querySelector(`input[data-key="${key.trim()}"]`);
                         if(targetInput) {
                             targetInput.checked = (val.trim() === '1');
                             const id = targetInput.id.split('-')[1];
-                            handleToggle(id, targetInput.closest('.gapps-item').classList.contains('sub-row'));
+                            const isSub = targetInput.closest('.gapps-item').classList.contains('sub-row');
+                            if (!isSub) handleToggle(id, false);
                         }
                     }
                 });
@@ -451,8 +474,8 @@
                 let updatedLine = line;
                 allInputs.forEach(input => {
                     const key = input.getAttribute('data-key');
-                    if (line.startsWith(key + '=')) {
-                        updatedLine = `${key}=${input.checked ? '1' : '0'}`;
+                    if (line.startsWith(key + '=')) { 
+                        updatedLine = `${key}=${input.checked ? '1' : '0'}`; 
                     }
                 });
                 output += updatedLine + "\n";
@@ -461,10 +484,23 @@
             const blob = new Blob([output], { type: 'application/octet-stream' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
-            link.download = name + ".conf";
+            link.download = name + ".config";
             link.click();
+
+            setTimeout(() => {
+                document.getElementById('guidance-modal').style.display = 'flex';
+                moveStep(0);
+                lucide.createIcons();
+            }, 600);
         }
 
+        function moveStep(idx) {
+            document.getElementById('step-slider').style.transform = `translateX(-${idx * 14.285}%)`;
+            document.querySelectorAll('.step-page').forEach((p, i) => p.classList.toggle('active', i === idx));
+        }
+
+        function closeModal() { document.getElementById('guidance-modal').style.display = 'none'; }
+        
         loadTemplate(16);
     </script>
 </body>
