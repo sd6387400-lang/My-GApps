@@ -64,9 +64,57 @@
         .sidebar-header { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); margin: 25px 0 10px 10px; font-weight: 800; opacity: 0.6; }
         .sidebar-item { display: flex; align-items: center; gap: 12px; color: var(--text-main); padding: 12px 15px; border-radius: 14px; cursor: pointer; text-decoration: none; font-weight: 600; margin-bottom: 4px; transition: 0.2s; border: none; background: transparent; width: 100%; text-align: left; }
         .sidebar-item:hover, .active-ver { background: var(--border); color: var(--accent); }
+        
+        /* Base content style: Centered and full width for mobile */
+        .content { 
+            padding: 80px 12px 120px; 
+            max-width: 1000px; /* Increased to allow more horizontal spread */
+            margin: 0 auto; 
+            transition: 0.4s; 
+            width: 100%;
+        }
+        
+        /* Desktop-only: Only apply the side margin when sidebar is permanently visible */
+        @media (min-width: 992px) {
+            .content { 
+                margin-left: 320px !important; 
+                width: calc(100% - 320px) !important; 
+                padding: 60px 40px !important; 
+            }
+        }
+        
+        /* Shrink the card padding on mobile to give more room to the toggles */
+        @media (max-width: 600px) {
+            .glass-card {
+                padding: 20px 10px;
+            }
+            .gapps-item {
+                padding: 16px 10px;
+            }
+        }
 
-        .content { padding: 100px 20px 120px; max-width: 850px; margin: 0 auto; transition: 0.4s; }
-        .glass-card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 30px; padding: 30px; backdrop-filter: blur(10px); }
+
+        /* Make the card take up more horizontal space on small screens */
+        .glass-card { 
+            background: var(--card-bg); 
+            border: 1px solid var(--border); 
+            border-radius: 20px; /* Slightly smaller radius for mobile looks better */
+            padding: 20px 12px;  /* Reduced internal padding from 30px to 12px */
+            backdrop-filter: blur(10px); 
+        }
+        
+        /* Adjust the items so they don't feel crowded */
+        .gapps-item { 
+            padding: 14px 12px; /* Slimmer internal padding for the rows */
+            gap: 8px;
+        }
+        
+        /* Ensure icons don't shrink too much */
+        .gapps-icon {
+            width: 32px;
+            height: 32px;
+        }
+
         
         .list-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1px solid var(--border); padding-bottom: 25px; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
         .bulk-actions { display: flex; gap: 8px; }
@@ -134,6 +182,29 @@
         .modal-btn.primary { background: var(--accent); color: white; }
 
         @keyframes slideIn { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
+        
+        .gapps-label {
+            flex: 1;
+            min-width: 0; /* Critical for preventing flexbox overflow */
+            overflow: hidden;
+        }
+        
+        .name-main {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: block;
+        }
+        
+        #app-search {
+            width: 100%;
+            font-size: 16px; /* Prevents iOS from zooming in on focus */
+        }
+        
+       
+
+
+
     </style>
 </head>
 <body>
@@ -322,28 +393,56 @@
 
         function filterApps() {
             const query = document.getElementById('app-search').value.toLowerCase();
-            const items = document.querySelectorAll('.gapps-item');
-            let found = false;
-
-            items.forEach(item => {
-                const mainName = item.querySelector('.name-main').innerText.toLowerCase();
-                const techName = item.querySelector('.name-tech').innerText.toLowerCase();
-                const wrapper = item.closest('.wrapper-div') || item;
-                const subContainer = wrapper.nextElementSibling;
+            const allWrappers = document.querySelectorAll('.wrapper-div');
+            let foundAny = false;
+        
+            allWrappers.forEach(wrapper => {
+                const parentRow = wrapper.querySelector('.parent-row');
+                const subContainer = wrapper.nextElementSibling; // The .sub-container
+                const parentId = parentRow.id.split('-')[1];
                 
-                if (mainName.includes(query) || techName.includes(query)) {
+                let parentMatch = parentRow.querySelector('.name-main').innerText.toLowerCase().includes(query) || 
+                                  parentRow.querySelector('.name-tech').innerText.toLowerCase().includes(query);
+        
+                let childMatch = false;
+                if (subContainer && subContainer.classList.contains('sub-container')) {
+                    const children = subContainer.querySelectorAll('.gapps-item');
+                    children.forEach(child => {
+                        const isMatch = child.querySelector('.name-main').innerText.toLowerCase().includes(query) ||
+                                        child.querySelector('.name-tech').innerText.toLowerCase().includes(query);
+                        
+                        child.style.display = (isMatch || query === "") ? 'flex' : 'none';
+                        if (isMatch) childMatch = true;
+                    });
+                }
+        
+                // Logic: Show parent if it matches OR if any of its children match
+                if (parentMatch || childMatch || query === "") {
                     wrapper.style.display = 'flex';
-                    if (subContainer && subContainer.classList.contains('sub-container')) {
-                        subContainer.style.display = subContainer.classList.contains('visible') ? 'flex' : 'none';
+                    foundAny = true;
+                    
+                    // Auto-expand dropdown if a child matches
+                    if (childMatch && query !== "") {
+                        subContainer.classList.add('visible');
+                        subContainer.style.display = 'flex';
+                        const chevron = document.getElementById(`drop-${parentId}`);
+                        if(chevron) chevron.classList.add('active-sub');
+                    } else if (query === "") {
+                        // Optional: Collapse everything when search is cleared
+                        subContainer.classList.remove('visible');
+                        subContainer.style.display = 'none';
+                        const chevron = document.getElementById(`drop-${parentId}`);
+                        if(chevron) chevron.classList.remove('active-sub');
                     }
-                    found = true;
                 } else {
                     wrapper.style.display = 'none';
-                    if (subContainer && subContainer.classList.contains('sub-container')) subContainer.style.display = 'none';
+                    if (subContainer) subContainer.style.display = 'none';
                 }
             });
-            document.getElementById('no-results').style.display = found ? 'none' : 'block';
+        
+            document.getElementById('no-results').style.display = foundAny ? 'none' : 'block';
         }
+
 
         function renderSmartList() {
             const pkgList = document.getElementById('list-packages');
@@ -410,12 +509,19 @@
 
         function handleToggle(index, isSub) {
             const checkbox = document.getElementById(`check-${index}`);
+            
+            // --- ADD THIS LINE HERE ---
+            handleExclusiveToggles(index);
+            // ---------------------------
+        
             if (!isSub) {
                 const subGroup = document.getElementById(`sub-of-${index}`);
                 if (subGroup) {
                     subGroup.querySelectorAll('input').forEach(child => {
                         child.disabled = !checkbox.checked;
-                        child.checked = checkbox.checked;
+                        // If parent is off, child must be off. 
+                        // If parent is on, we usually default child to on in NikGApps configs
+                        child.checked = checkbox.checked; 
                         const row = child.closest('.gapps-item');
                         if (checkbox.checked) {
                             row.classList.remove('disabled-visual');
@@ -426,6 +532,33 @@
                 }
             }
         }
+
+        
+        // Add this helper function to handle the exclusive relationship
+        function handleExclusiveToggles(currentIndex) {
+            const currentInput = document.getElementById(`check-${currentIndex}`);
+            const currentKey = currentInput.getAttribute('data-key');
+        
+            // Define the mutually exclusive pairs
+            const exclusivePairs = {
+                'PixelSetupWizard': 'SetupWizard',
+                'SetupWizard': 'PixelSetupWizard'
+            };
+        
+            if (currentInput.checked && exclusivePairs[currentKey]) {
+                const targetKey = exclusivePairs[currentKey];
+                // Find the other input by its data-key attribute
+                const otherInput = document.querySelector(`input[data-key="${targetKey}"]`);
+                
+                if (otherInput && otherInput.checked) {
+                    otherInput.checked = false;
+                    // Trigger the visual update for the other input's children if necessary
+                    const otherId = otherInput.id.split('-')[1];
+                    handleToggle(otherId, false); 
+                }
+            }
+        }
+
 
         function handleCardClick(index, isSub) {
             if (isSub) return;
