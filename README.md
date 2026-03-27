@@ -27,3 +27,6 @@ These are GAPPs packages from NikGapps Specifically For Mi439 devices😉
 * Google assistant 🤖
 * Pixel setup wizard 🧙‍♀️
 * And i forgot maybe that's it
+
+# Disclaimer
+This project is not affiliated with, authorized, or endorsed by Google LLC or the NikGApps team. All product names, logos, and brands are property of their respective owners
