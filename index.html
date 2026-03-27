@@ -117,6 +117,155 @@
 
         .markdown-body { font-size: 1.05rem; line-height: 1.8; color: var(--text-dim); }
         .markdown-body h1, .markdown-body h2 { color: var(--text-main); border-bottom: 1px solid var(--border); padding-bottom: 10px; margin-bottom: 15px; }
+        /* --- REVOLUTION BUTTON VARIABLES --- */
+        :root {
+            --g-blue: #4285F4; --g-red: #EA4335; --g-yellow: #FBBC05; --g-green: #34A853;
+        }
+        
+/* --- REVOLUTION BUTTON VARIABLES --- */
+:root {
+    --g-blue: #4285F4; --g-red: #EA4335; --g-yellow: #FBBC05; --g-green: #34A853;
+}
+
+.rev-wrapper {
+    position: relative;
+    width: calc(100% - 24px); 
+    height: 85px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    margin: 10px 12px 20px 12px;
+}
+
+/* THE FLOATING UNIT - Transparent background to show only RGB */
+.rev-float-unit {
+    position: relative;
+    width: 100%;
+    height: 72px;
+    border-radius: 20px;
+    padding: 2px; /* The Laser Thickness */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: rev-floating 3s ease-in-out infinite;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    overflow: hidden;
+    background: transparent; 
+}
+
+@keyframes rev-floating {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* THE MOVING RGB LASER (No black background) */
+.rev-float-unit::before {
+    content: '';
+    position: absolute;
+    width: 150%;
+    height: 300%;
+    background: conic-gradient(
+        from 0deg, 
+        transparent 0%, 
+        var(--g-blue) 10%, 
+        var(--g-green) 20%, 
+        var(--g-yellow) 30%, 
+        var(--g-red) 40%, 
+        transparent 50%
+    );
+    animation: laserRun 3s linear infinite;
+}
+
+@keyframes laserRun {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* THE BUTTON CONTENT - ADAPTIVE BACKGROUND */
+.rev-inner {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
+    /* Uses your existing card/sidebar background variables */
+    background: var(--card-bg); 
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    transition: background 0.3s, transform 0.3s;
+}
+
+/* THE SHINE SWEEP - Reactive to Hover */
+.rev-inner::after {
+    content: '';
+    position: absolute;
+    top: 0; 
+    left: -150%;
+    width: 100%; 
+    height: 100%;
+    background: linear-gradient(
+        90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.2), 
+        transparent
+    );
+    transform: skewX(-25deg);
+}
+
+.rev-wrapper:hover .rev-inner::after {
+    left: 150%;
+    transition: 0.8s ease-in-out;
+}
+
+.rev-icon-box {
+    width: 40px; height: 40px;
+    background: var(--g-blue);
+    color: #fff;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    transition: 0.3s;
+    box-shadow: 0 4px 12px rgba(66, 133, 244, 0.3);
+}
+
+.rev-text-stack { display: flex; flex-direction: column; text-align: left; }
+.rev-badge { 
+    font-size: 7px; 
+    font-weight: 800; 
+    text-transform: uppercase; 
+    letter-spacing: 1.5px; 
+    color: var(--accent); /* Matches your site's accent color */
+    margin-bottom: 2px; 
+}
+.rev-title { 
+    font-size: 13px; 
+    font-weight: 700; 
+    color: var(--text-main); /* Adaptive text color */
+    line-height: 1.2; 
+}
+
+/* --- HOVER STATES --- */
+.rev-wrapper:hover .rev-float-unit {
+    animation-play-state: paused;
+    transform: scale(1.03);
+    padding: 3.5px; /* Border grows on hover */
+}
+
+.rev-wrapper:hover .rev-float-unit::before {
+    animation-duration: 1.2s; /* Laser speeds up */
+}
+
+.rev-wrapper:hover .rev-icon-box {
+    background: var(--g-green);
+    transform: rotate(-10deg) scale(1.1);
+}
+
+
     </style>
 </head>
 <body>
@@ -129,14 +278,33 @@
     <div id="overlay" onclick="toggleSidebar()"></div>
     <div class="menu-btn" onclick="toggleSidebar()"><i data-lucide="menu"></i></div>
 
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-header">Navigation</div>
-        <a href="https://sd6387400-lang.github.io/" class="sidebar-item"><i data-lucide="home"></i> Home</a>
-        <a href="https://sd6387400-lang.github.io/creations.html" class="sidebar-item"><i data-lucide="layout-template"></i> My Creations</a>
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">Navigation</div>
+            <a href="https://sd6387400-lang.github.io/" class="sidebar-item"><i data-lucide="home"></i> Home</a>
+            <a href="https://sd6387400-lang.github.io/creations.html" class="sidebar-item"><i data-lucide="layout-template"></i> My Creations</a>
+            
+            <div class="sidebar-header">Release History</div>
+            <div id="history-container"></div>
+            
+            <div class="sidebar-header">Create</div>
+            
+            <a href="create-yourself.html" class="rev-wrapper">
+                <div class="rev-float-unit">
+                    <div class="rev-inner">
+                        <div class="rev-icon-box">
+                            <i data-lucide="zap"></i>
+                        </div>
+                        <div class="rev-text-stack">
+                            <span class="rev-badge">New</span>
+                            <span class="rev-title">Create Your Own GApps</span>
+                        </div>
+                    </div>
+                </div>
+            </a>
         
-        <div class="sidebar-header">Release History</div>
-        <div id="history-container"></div>
-    </nav>
+
+        </nav>
+
 
     <div class="content">
         <div class="left-panel">
