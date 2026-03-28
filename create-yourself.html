@@ -264,8 +264,8 @@
             </div>
 
             <div class="search-wrapper">
-                <i data-lucide="search"></i>
-                <input type="text" id="app-search" placeholder="Search apps or packages..." oninput="filterApps()">
+                
+                <input type="text" id="app-search" placeholder='Search apps or packages...' oninput="filterApps()">
             </div>
 
             <div id="section-packages">
@@ -550,7 +550,9 @@
             // Define the mutually exclusive pairs
             const exclusivePairs = {
                 'PixelSetupWizard': 'SetupWizard',
-                'SetupWizard': 'PixelSetupWizard'
+                'SetupWizard': 'PixelSetupWizard',
+                'CoreGo': 'Core',
+                'Core': 'CoreGo'
             };
         
             if (currentInput.checked && exclusivePairs[currentKey]) {
