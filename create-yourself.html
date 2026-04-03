@@ -1199,8 +1199,10 @@ function handleExclusiveToggles(currentIndex) {
 
     const exclusivePairs = {
         'PixelSetupWizard': 'SetupWizard',
-        'SetupWizard': 'PixelSetupWizard'
-    };
+        'SetupWizard': 'PixelSetupWizard',
+        'Core': 'CoreGo',
+        'CoreGo': 'Core'
+        };
 
     if (currentInput.checked && exclusivePairs[currentKey]) {
         const targetKey = exclusivePairs[currentKey];
