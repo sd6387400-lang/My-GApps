@@ -1,5 +1,6 @@
-# GAPPS-Mi439
-These are GAPPs packages from NikGapps Specifically For Mi439 devices😉
+# GAPPS
+These are GAPPs packages from NikGapps 
+These are for every devices😉
 
 
 # Credits
