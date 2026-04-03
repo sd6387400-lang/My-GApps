@@ -213,7 +213,8 @@
         body[data-sidebar="6"] .sidebar-link.active-rel { background: var(--text-main); color: var(--bg-base); }
 
         body.dark-mode .sidebar { border-right-color:rgba(255,255,255,0.07); box-shadow:4px 0 24px rgba(0,0,0,0.4); }
-        @media(min-width:992px) { .sidebar { left:0!important; } .menu-btn { display:none!important; } #overlay-ui { display:none!important; } .content { margin-left: 320px; max-width: calc(100% - 320px); padding: 60px 40px; } }
+        @media(min-width:992px) { .sidebar { left:0!important; } .menu-btn { display:none!important; } #overlay-ui { display:none!important; } }
+
 
         .sidebar-header { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); margin: 25px 0 10px 12px; font-weight: 800; opacity: 0.7; }
         .sidebar-link { display: flex; align-items: center; gap: 12px; color: var(--text-dim); padding: 12px 15px; border-radius: 14px; cursor: pointer; text-decoration: none; font-weight: 600; margin-bottom: 4px; transition: background 0.2s, color 0.2s, transform 0.2s var(--spring); border: none; background: transparent; width: 100%; text-align: left; font-size: 0.9rem; }
@@ -225,10 +226,11 @@
         /* ── Content Layout ── */
         .content { padding: 100px 24px 80px; max-width: 1100px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 40px; position: relative; z-index: 1;}
         @media (min-width: 992px) {
-            .content { flex-direction: row; align-items: flex-start; }
+            .content { flex-direction: row; align-items: flex-start; margin-left: 320px; max-width: calc(100% - 320px); padding: 60px 40px; }
             .left-panel { flex: 1; position: sticky; top: 100px; }
             .right-panel { flex: 1.4; }
         }
+
 
         .glass-card { background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 28px; padding: 40px; backdrop-filter: blur(16px); transition: background 0.5s, border-color 0.5s, box-shadow 0.3s; }
         body.dark-mode .glass-card { border-color: rgba(255,255,255,0.07); box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 24px 64px rgba(0,0,0,0.5); }
