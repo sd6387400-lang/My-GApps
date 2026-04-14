@@ -21,6 +21,7 @@
             --text-main:  #1E1200;
             --text-dim:   #6B4A1A;
             --accent:     #A06800;
+            --accent-text: #A06800;
             --accent-rgb: 160,104,0;
             --accent1:    #A06800;
             --accent2:    #7EC8E3;
@@ -161,9 +162,13 @@
         .loader-v6 .orbit-moon::after { content:''; position:absolute; top:-5px; left:50%; transform:translateX(-50%); width:10px; height:10px; background:var(--shape2); border-radius:50%; }
 
         /* ── Overlay / Menu ── */
-        #overlay-ui { position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:999; opacity:0; visibility:hidden; transition:0.3s; }
+        #overlay-ui { position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:998; opacity:0; visibility:hidden; transition:0.3s; }
         #overlay-ui.active { opacity:1; visibility:visible; }
-        .menu-btn { position:fixed; top:25px; left:25px; z-index:1001; background:var(--accent); color:white; border:none; padding:15px; border-radius:50%; cursor:pointer; box-shadow:0 10px 25px rgba(0,0,0,0.2); display:none; transition:transform 0.35s var(--spring), background 0.3s; }
+        #palette-overlay { position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1004; opacity:0; visibility:hidden; transition:0.4s var(--m3-decel); }
+        #palette-overlay.active { opacity:1; visibility:visible; }
+
+        /* Menu Button stays lower z-index so the sidebar visually hides it when active */
+        .menu-btn { position:fixed; top:25px; left:25px; z-index:997; background:var(--accent); color:white; border:none; padding:15px; border-radius:50%; cursor:pointer; box-shadow:0 10px 25px rgba(0,0,0,0.2); display:none; transition:transform 0.35s var(--spring), background 0.3s; }
         .menu-btn:hover { transform:scale(1.12); }
         .menu-btn:active { transform:scale(0.92); }
 
@@ -173,7 +178,8 @@
         .sidebar { position:fixed; top:0; left:-320px; width:320px; height:100vh; background:var(--sidebar-bg); z-index:1000; padding:40px 20px; transition:left 0.4s var(--m3-decel), border 0.3s, background 0.3s, margin 0.3s, border-radius 0.3s, box-shadow 0.3s; border-right:1px solid var(--border); overflow-y:auto; display:flex; flex-direction:column; scrollbar-width:thin; scrollbar-color:rgba(var(--accent-rgb),0.2) transparent; }
         .sidebar.active { left: 0; }
         
-        body[data-sidebar="2"] .sidebar { border-right: none; box-shadow: 4px 0 30px rgba(0,0,0,0.06); background-image: radial-gradient(circle at 0% 0%, rgba(var(--accent-rgb), 0.08) 0%, transparent 50%), radial-gradient(circle at 100% 100%, rgba(var(--accent-rgb), 0.08) 0%, transparent 50%); background-attachment: fixed; }
+        body[data-sidebar="2"] .sidebar { border-right: 1px solid var(--border); background-color: var(--sidebar-bg); background-image: radial-gradient(circle at 10% 10%, rgba(var(--accent-rgb), 0.15) 0%, transparent 40%), radial-gradient(circle at 90% 90%, rgba(var(--accent-rgb), 0.15) 0%, transparent 40%); background-attachment: fixed; }
+        body[data-sidebar="3"] .sidebar { background-color: var(--sidebar-bg); background-image: radial-gradient(rgba(var(--accent-rgb), 0.25) 1px, transparent 1px); background-size: 14px 14px; border-right: 1px solid var(--border); }
         body[data-sidebar="4"] .sidebar { background-color: var(--sidebar-bg); background-image: linear-gradient(rgba(var(--accent-rgb),0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(var(--accent-rgb),0.06) 1px, transparent 1px); background-size: 20px 20px; border-right: 2px solid var(--border); }
         body[data-sidebar="4"] .sidebar-link.active { background: var(--bg-base); color: var(--accent); border-left: 4px solid var(--accent); border-radius: 0 10px 10px 0; padding-left:18px; box-shadow: 2px 2px 10px rgba(0,0,0,0.05); }
         body[data-sidebar="5"] .sidebar { background-color: rgba(var(--accent-rgb), 0.02); background-image: radial-gradient(ellipse at 50% -20%, rgba(var(--accent-rgb), 0.15) 0%, transparent 60%), radial-gradient(ellipse at 50% 120%, rgba(var(--accent-rgb), 0.15) 0%, transparent 60%); border-right: 1px solid rgba(var(--accent-rgb), 0.1); background-attachment: fixed; }
@@ -182,9 +188,9 @@
         body[data-sidebar="6"] .sidebar-link.active { background: var(--text-main); color: var(--bg-base); }
         body.dark-mode .sidebar { border-right-color:rgba(255,255,255,0.07); box-shadow:4px 0 24px rgba(0,0,0,0.4); }
 
-        .sidebar-header { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent); margin: 25px 0 10px 10px; font-weight: 800; opacity: 0.7; }
+        .sidebar-header { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 1.5px; color: var(--accent-text); margin: 25px 0 10px 10px; font-weight: 800; opacity: 0.7; }
         .sidebar-link { display: flex; align-items: center; gap: 12px; color: var(--text-dim); padding: 12px 15px; border-radius: 14px; cursor: pointer; text-decoration: none; font-weight: 600; margin-bottom: 4px; transition: background 0.2s, color 0.2s, transform 0.2s var(--spring); border: none; background: transparent; width: 100%; text-align: left; font-size: 0.9rem; }
-        .sidebar-link:hover { background: rgba(var(--accent-rgb),0.08); color: var(--accent); transform:translateX(3px); }
+        .sidebar-link:hover { background: rgba(var(--accent-rgb),0.08); color: var(--accent-text); transform:translateX(3px); }
         .sidebar-link.active { background: var(--accent); color: white; transform:translateX(0); }
         .sidebar-link:active { transform: scale(0.95); transition: transform 0.1s ease-out; }
 
@@ -203,14 +209,12 @@
             .menu-btn { display: none !important; }
             #overlay-ui { display: none !important; }
             
-            /* Push content to the right so it doesn't overlap sidebar */
             .content { 
                 margin-left: 320px !important; 
                 max-width: calc(100% - 320px) !important; 
                 padding: 60px 40px 120px !important; 
             }
             
-            /* Center the floating button perfectly within the remaining space */
             .fab { 
                 left: calc(50% + 160px) !important; 
                 transform: translateX(-50%) !important; 
@@ -222,9 +226,7 @@
             /* Matrix Sidebar special margins on desktop */
             body[data-sidebar="3"] .sidebar { 
                 height: calc(100vh - 40px); margin: 20px; border-radius: 24px; 
-                border: 1px solid var(--border); box-shadow: 0 10px 30px rgba(0,0,0,0.06); 
-                background-image: radial-gradient(rgba(var(--accent-rgb), 0.15) 1.5px, transparent 1.5px); 
-                background-size: 18px 18px; 
+                box-shadow: 0 10px 30px rgba(0,0,0,0.06); 
             }
             body[data-sidebar="3"] .content { margin-left: 360px !important; max-width: calc(100% - 360px) !important; }
             body[data-sidebar="3"] .fab { left: calc(50% + 180px) !important; }
@@ -237,7 +239,7 @@
 
         .list-header { display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 1.5px solid var(--border); padding-bottom: 25px; margin-bottom: 25px; flex-wrap: wrap; gap: 15px; }
         .bulk-actions { display: flex; gap: 8px; }
-        .bulk-actions button { background: rgba(var(--accent-rgb), 0.1); border: 1px solid rgba(var(--accent-rgb), 0.2); color: var(--accent); font-weight: 800; font-size: 0.65rem; cursor: pointer; padding: 10px 16px; border-radius: 12px; transition: all 0.2s var(--spring); letter-spacing: 0.5px; }
+        .bulk-actions button { background: rgba(var(--accent-rgb), 0.1); border: 1px solid rgba(var(--accent-rgb), 0.2); color: var(--accent-text); font-weight: 800; font-size: 0.65rem; cursor: pointer; padding: 10px 16px; border-radius: 12px; transition: all 0.2s var(--spring); letter-spacing: 0.5px; }
         .bulk-actions button:hover { background: var(--accent); color: white; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(var(--accent-rgb), 0.3); }
         .bulk-actions button:active { transform: scale(0.95); }
 
@@ -248,7 +250,7 @@
         #app-search { width: 100%; padding: 14px 0; border: none; background: transparent; color: var(--text-main); font-weight: 600; outline: none; font-size: 0.9rem; }
         #app-search::placeholder { color: var(--text-dim); opacity: 0.6; font-weight: 500; }
 
-        .section-divider { display: flex; align-items: center; gap: 15px; margin: 30px 0 15px; color: var(--accent); font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; }
+        .section-divider { display: flex; align-items: center; gap: 15px; margin: 30px 0 15px; color: var(--accent-text); font-weight: 800; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1.5px; opacity: 0.8; }
         .section-divider::after { content: ''; flex: 1; height: 2px; background: var(--border); border-radius: 2px; }
 
         .wrapper-div { width: 100%; display: flex; flex-direction: column; }
@@ -287,7 +289,6 @@
         input:checked + .slider:before { transform: translateX(20px); }
         input:disabled + .slider { cursor: not-allowed; opacity: 0.5; }
 
-        /* General layout rule applied in standard media query above */
         .fab { position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); background: var(--accent); color: white; padding: 18px 32px; border-radius: 100px; font-weight: 800; font-size: 0.95rem; border: none; cursor: pointer; display: flex; align-items: center; gap: 12px; box-shadow: 0 10px 30px rgba(var(--accent-rgb), 0.4); z-index: 100; transition: all 0.3s var(--spring); letter-spacing: 0.5px; }
         .fab:hover { transform: translateX(-50%) scale(1.05) translateY(-5px); box-shadow: 0 15px 40px rgba(var(--accent-rgb), 0.5); }
         .fab:active { transform: translateX(-50%) scale(0.95); }
@@ -301,51 +302,49 @@
         .modal-close:hover { opacity: 1; color: var(--accent); transform: scale(1.1); background: rgba(var(--accent-rgb), 0.2); }
         
         .step-viewport { overflow: hidden; width: 100%; margin-top: 10px; }
-        /* 11 steps total -> 1100% width */
-        .step-container { display: flex; transition: transform 0.5s var(--m3-decel); width: 1100%; }
-        /* 100 / 11 = 9.0909% */
-        .step-page { width: 9.0909%; flex-shrink: 0; opacity: 0; transition: opacity 0.4s; padding: 5px; }
+        .step-container { display: flex; transition: transform 0.5s var(--m3-decel); width: 700%; }
+        .step-page { width: 14.285%; flex-shrink: 0; opacity: 0; transition: opacity 0.4s; padding: 5px; }
         .step-page.active { opacity: 1; }
         
         .modal-btns { display: flex; gap: 12px; margin-top: 30px; }
-        .modal-btn { flex: 1; padding: 14px; border-radius: 14px; border: 1.5px solid var(--border); font-weight: 800; cursor: pointer; background: transparent; color: var(--text-main); transition: 0.2s var(--spring); text-align: center; text-decoration: none; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .modal-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+        .modal-btn { flex: 1; padding: 14px; border-radius: 14px; border: 1.5px solid var(--border); font-weight: 800; cursor: pointer; background: transparent; color: var(--text-main); transition: 0.2s var(--spring); text-align: center; text-decoration: none; font-size: 0.9rem; }
+        .modal-btn:hover { border-color: var(--accent); color: var(--accent-text); transform: translateY(-2px); }
         .modal-btn.primary { background: var(--accent); color: white; border-color: var(--accent); box-shadow: 0 8px 20px rgba(var(--accent-rgb), 0.3); }
         .modal-btn.primary:hover { opacity: 0.9; transform: translateY(-2px) scale(1.02); color: white; }
 
         /* ══════════════════════════════════════════════
-           PALETTE PANEL
+           PALETTE SIDEBAR PANEL (NEW)
         ══════════════════════════════════════════════ */
-        #palette-panel { position:fixed; bottom:80px; right:20px; z-index:1003; background:var(--sidebar-bg); border:1.5px solid var(--border); border-radius:26px; padding:20px; width:min(360px, calc(100vw - 40px)); max-height:min(88vh, 680px); overflow-y:auto; scrollbar-width:thin; box-shadow:0 14px 48px rgba(0,0,0,0.22); opacity:0; transform:translateY(14px) scale(0.95); pointer-events:none; transition:opacity 0.25s var(--m3-decel), transform 0.3s var(--spring); }
-        #palette-panel.open { opacity:1; transform:translateY(0) scale(1); pointer-events:all; }
-        body.dark-mode #palette-panel { box-shadow:0 14px 60px rgba(0,0,0,0.5), 0 0 0 1px rgba(255,255,255,0.06); }
+        #palette-panel { position:fixed; top:0; right:-360px; z-index:1005; background:var(--sidebar-bg); border-left:1px solid var(--border); border-radius:0; padding:40px 20px; width:min(320px, 100vw); height:100vh; overflow-y:auto; scrollbar-width:thin; pointer-events:all; transition:right 0.4s var(--m3-decel), border 0.3s, background 0.3s, box-shadow 0.4s var(--m3-decel); box-shadow:none; }
+        #palette-panel.open { right:0; box-shadow:-10px 0 40px rgba(0,0,0,0.15); }
+        body.dark-mode #palette-panel.open { box-shadow:-14px 0 60px rgba(0,0,0,0.6); border-color:rgba(255,255,255,0.08); }
 
-        .pp-section-title { font-size:0.58rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent); font-weight:800; opacity:0.7; margin-bottom:9px; margin-top:14px; }
+        .pp-section-title { font-size:0.58rem; letter-spacing:0.14em; text-transform:uppercase; color:var(--accent-text); font-weight:800; opacity:0.7; margin-bottom:9px; margin-top:14px; }
         .pp-theme-row { display:flex; gap:5px; margin-bottom:14px; }
         .pp-theme-btn { flex:1; padding:8px 5px; border-radius:10px; font-size:0.7rem; font-weight:700; border:1.5px solid var(--border); background:var(--card-bg); color:var(--text-dim); cursor:pointer; transition:all 0.2s var(--spring); display:flex; align-items:center; justify-content:center; gap:4px; }
-        .pp-theme-btn:hover { border-color:var(--accent); color:var(--accent); transform:scale(1.04); }
+        .pp-theme-btn:hover { border-color:var(--accent); color:var(--accent-text); transform:scale(1.04); }
         .pp-theme-btn:active { transform:scale(0.96); }
-        .pp-theme-btn.active { background:rgba(var(--accent-rgb),0.12); border-color:var(--accent); color:var(--accent); }
+        .pp-theme-btn.active { background:rgba(var(--accent-rgb),0.12); border-color:var(--accent); color:var(--accent-text); }
 
         .pp-font-grid { display:grid; grid-template-columns:1fr 1fr; gap:5px; margin-bottom:14px; }
         .pp-font-btn { padding:8px 10px; border-radius:10px; font-size:0.7rem; font-weight:700; border:1.5px solid var(--border); background:var(--card-bg); color:var(--text-dim); cursor:pointer; transition:all 0.2s var(--spring); text-align:left; }
-        .pp-font-btn:hover { border-color:var(--accent); color:var(--accent); transform:translateY(-1px); }
-        .pp-font-btn.active { background:rgba(var(--accent-rgb),0.12); border-color:var(--accent); color:var(--accent); }
+        .pp-font-btn:hover { border-color:var(--accent); color:var(--accent-text); transform:translateY(-1px); }
+        .pp-font-btn.active { background:rgba(var(--accent-rgb),0.12); border-color:var(--accent); color:var(--accent-text); }
         .pp-font-preview { display:block; font-size:0.85rem; margin-bottom:1px; font-weight:800; }
 
         .pp-opt-grid { display:grid; grid-template-columns:repeat(3, 1fr); gap:5px; margin-bottom:14px; }
         .pp-opt-btn { padding:8px 5px; border-radius:10px; font-size:0.65rem; font-weight:800; border:1.5px solid var(--border); background:var(--card-bg); color:var(--text-dim); cursor:pointer; transition:all 0.2s var(--spring); text-align:center; }
-        .pp-opt-btn:hover { border-color:var(--accent); color:var(--accent); transform:translateY(-1px); }
-        .pp-opt-btn.active { background:rgba(var(--accent-rgb),0.12); border-color:var(--accent); color:var(--accent); }
+        .pp-opt-btn:hover { border-color:var(--accent); color:var(--accent-text); transform:translateY(-1px); }
+        .pp-opt-btn.active { background:rgba(var(--accent-rgb),0.12); border-color:var(--accent); color:var(--accent-text); }
 
         .pp-divider { height:1px; background:var(--border); margin:12px 0; opacity:0.6; }
         .pp-category { margin-bottom:14px; }
         .pp-cat-label { font-size:0.55rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--text-dim); font-weight:800; opacity:0.55; margin-bottom:7px; padding:0 2px; }
         .pp-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
         .pp-item { display:flex; align-items:center; gap:7px; padding:8px 10px; border-radius:11px; cursor:pointer; border:1.5px solid var(--border); transition:all 0.2s var(--spring); font-size:0.72rem; font-weight:700; color:var(--text-dim); }
-        .pp-item:hover { border-color:var(--accent); color:var(--accent); transform:scale(1.03); }
+        .pp-item:hover { border-color:var(--accent); color:var(--accent-text); transform:scale(1.03); }
         .pp-item:active { transform:scale(0.97); }
-        .pp-item.active { background:rgba(var(--accent-rgb),0.1); border-color:var(--accent); color:var(--accent); }
+        .pp-item.active { background:rgba(var(--accent-rgb),0.1); border-color:var(--accent); color:var(--accent-text); }
 
         .pp-dots { display:flex; gap:3px; }
         .pp-dot { width:7px; height:7px; border-radius:50%; }
@@ -355,14 +354,15 @@
         .pp-accent-swatch:hover { transform:scale(1.1) translateY(-2px); }
         .pp-accent-swatch:active { transform:scale(0.95); }
         .pp-accent-swatch.active { border-color:var(--text-main); transform:scale(1.05); }
-        .pp-accent-label { font-size:0.58rem; font-weight:800; color:var(--text-dim); opacity:0.7; margin-top:5px; text-align:center; }
 
         .pp-custom-trigger { display:flex; align-items:center; gap:7px; padding:8px 10px; border-radius:11px; cursor:pointer; border:1.5px solid var(--border); transition:all 0.2s var(--spring); font-size:0.72rem; font-weight:700; color:var(--text-dim); }
-        .pp-custom-trigger:hover { border-color:var(--accent); color:var(--accent); }
-        .pp-custom-trigger.active { background:rgba(var(--accent-rgb),0.1); border-color:var(--accent); color:var(--accent); }
+        .pp-custom-trigger:hover { border-color:var(--accent); color:var(--accent-text); }
+        .pp-custom-trigger.active { background:rgba(var(--accent-rgb),0.1); border-color:var(--accent); color:var(--accent-text); }
         .pp-custom-body { display:grid; grid-template-rows:0fr; transition:grid-template-rows 0.35s var(--m3-decel); }
         .pp-custom-body.visible { grid-template-rows:1fr; }
-        .pp-custom-body-inner { overflow:hidden; padding:10px 4px 4px; }
+        .pp-custom-body-inner { min-height:0; overflow:hidden; opacity:0; transition:opacity 0.2s; padding: 0 4px; }
+        .pp-custom-body.visible .pp-custom-body-inner { opacity:1; transition:opacity 0.35s 0.1s; }
+        .pp-custom-body-content { padding:10px 0 4px; } 
         .pp-color-rows { display:flex; flex-direction:column; gap:8px; }
         .pp-color-row { display:flex; align-items:center; gap:10px; }
         .pp-color-label { font-size:0.67rem; font-weight:700; color:var(--text-dim); width:62px; flex-shrink:0; }
@@ -376,31 +376,23 @@
         .pp-apply-btn:hover { opacity:0.88; transform:scale(1.03); }
         .pp-apply-btn:active { transform:scale(0.97); }
         .pp-reset-btn { padding:9px 14px; border-radius:10px; background:transparent; color:var(--text-dim); border:1.5px solid var(--border); cursor:pointer; font-size:0.73rem; font-weight:800; transition:all 0.2s var(--spring); }
-        .pp-reset-btn:hover { border-color:var(--accent); color:var(--accent); transform:scale(1.03); }
+        .pp-reset-btn:hover { border-color:var(--accent); color:var(--accent-text); transform:scale(1.03); }
 
         .pp-saved-palettes { display:flex; flex-direction:column; gap:5px; margin-top:12px; }
         .pp-saved-item { display:flex; justify-content:space-between; align-items:center; padding:6px 10px; border-radius:8px; background:var(--card-bg); border:1px solid var(--border); cursor:pointer; font-size:0.65rem; font-weight:700; color:var(--text-dim); transition:all 0.2s var(--spring); }
-        .pp-saved-item:hover { border-color:var(--accent); color:var(--accent); }
+        .pp-saved-item:hover { border-color:var(--accent); color:var(--accent-text); }
         .del-btn-wrap { padding:4px; opacity:0.5; transition:opacity 0.2s, color 0.2s; cursor:pointer; display:flex; align-items:center; justify-content:center; }
         .pp-saved-item:hover .del-btn-wrap { opacity:0.8; }
         .del-btn-wrap:hover { opacity:1 !important; color:red; }
 
-        #palette-indicator { position:fixed; bottom:30px; right:20px; z-index:500; display:flex; align-items:center; gap:8px; background:var(--sidebar-bg); border:1.5px solid var(--border); border-radius:999px; padding:8px 14px 8px 10px; font-size:0.7rem; font-weight:700; color:var(--text-dim); box-shadow:0 4px 20px rgba(0,0,0,0.1); cursor:pointer; transition:all 0.3s var(--spring); user-select:none; }
-        #palette-indicator:hover { border-color:var(--accent); color:var(--accent); transform:scale(1.05); }
-        #palette-indicator:active { transform:scale(0.97); }
-        .palette-dots { display:flex; gap:4px; }
-        .palette-dot { width:9px; height:9px; border-radius:50%; box-shadow:0 1px 3px rgba(0,0,0,0.15); }
-
         /* Dark Mode Overrides for UI Elements */
         body.dark-mode .pp-theme-btn:not(.active), 
         body.dark-mode .pp-item:not(.active), 
-        body.dark-mode .filter-chip:not(.active), 
         body.dark-mode .pp-font-btn:not(.active), 
         body.dark-mode .pp-opt-btn:not(.active), 
         body.dark-mode .pp-saved-item:not(.active) { background:rgba(255,255,255,0.04); border-color:rgba(255,255,255,0.09); }
         body.dark-mode .search-input, body.dark-mode .search-wrapper { background:rgba(255,255,255,0.06); border-color:rgba(255,255,255,0.1); }
         body.dark-mode #palette-panel { border-color:rgba(255,255,255,0.08); }
-        body.dark-mode #palette-indicator { box-shadow:0 4px 20px rgba(0,0,0,0.4); border-color:rgba(255,255,255,0.08); }
 
     </style>
 </head>
@@ -453,10 +445,16 @@
 </div>
 
 <div id="overlay-ui" onclick="toggleSidebar()"></div>
+<div id="palette-overlay" onclick="togglePalettePanel()"></div>
 <button class="menu-btn" id="menu-trigger" onclick="toggleSidebar()"><i data-lucide="menu"></i></button>
 
 <div id="palette-panel">
-    <div class="pp-section-title" style="margin-top:0">Appearance</div>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <div style="font-size: 0.75rem; font-weight: 800; letter-spacing: 0.15em; text-transform: uppercase; color: var(--accent-text);">Customisation</div>
+        <button onclick="togglePalettePanel()" style="background:none; border:none; color:var(--text-dim); cursor:pointer; padding:5px;"><i data-lucide="x" size="20"></i></button>
+    </div>
+    
+    <div class="pp-section-title" style="margin-top:0">Theme Mode</div>
     <div class="pp-theme-row">
         <button class="pp-theme-btn" id="theme-sys" onclick="setThemeMode('system')"><i data-lucide="monitor" size="11"></i> System</button>
         <button class="pp-theme-btn" id="theme-light" onclick="setThemeMode('light')"><i data-lucide="sun" size="11"></i> Light</button>
@@ -506,40 +504,36 @@
     <div id="pp-categories"></div>
     <div class="pp-divider"></div>
 
-    <div class="pp-section-title" style="margin-top:2px">Accent Colour</div>
+    <div class="pp-section-title" style="margin-top:2px">Accent Colours</div>
     <div class="pp-accents">
         <div class="pp-accent-swatch" id="acc-sw-1" onclick="setActiveAccent(1)" title="Accent 1"></div>
         <div class="pp-accent-swatch" id="acc-sw-2" onclick="setActiveAccent(2)" title="Accent 2"></div>
         <div class="pp-accent-swatch" id="acc-sw-3" onclick="setActiveAccent(3)" title="Accent 3"></div>
     </div>
-    <div class="pp-accent-label">1 &nbsp;·&nbsp; 2 &nbsp;·&nbsp; 3</div>
     <div class="pp-divider" style="margin-top:12px"></div>
 
-    <div class="pp-section-title">Custom Accents</div>
     <div class="pp-custom-trigger" id="pp-custom-trigger" onclick="toggleCustomBody()">
-        <div class="pp-dots"><div class="pp-dot" id="cust-d1" style="background:#888"></div><div class="pp-dot" id="cust-d2" style="background:#888"></div><div class="pp-dot" id="cust-d3" style="background:#888"></div></div>
-        <span>Customise…</span><i data-lucide="chevron-down" size="12" style="margin-left:auto;opacity:0.5;transition:transform 0.35s var(--spring)" id="custom-chevron"></i>
+        <div class="pp-dots"><div class="pp-dot" id="cust-d1"></div><div class="pp-dot" id="cust-d2"></div><div class="pp-dot" id="cust-d3"></div><div class="pp-dot" id="cust-d4"></div></div>
+        <span>Customise Colors…</span><i data-lucide="chevron-down" size="12" style="margin-left:auto;opacity:0.5;transition:transform 0.35s var(--spring)" id="custom-chevron"></i>
     </div>
     <div class="pp-custom-body" id="pp-custom-body">
         <div class="pp-custom-body-inner">
-            <div class="pp-color-rows">
-                <div class="pp-color-row"><span class="pp-color-label">Accent 1</span><input type="color" class="pp-color-input" id="cp1" value="#A06800" oninput="onColorPick()"><div class="pp-color-hex" id="cp1-hex">#A06800</div></div>
-                <div class="pp-color-row"><span class="pp-color-label">Accent 2</span><input type="color" class="pp-color-input" id="cp2" value="#7EC8E3" oninput="onColorPick()"><div class="pp-color-hex" id="cp2-hex">#7EC8E3</div></div>
-                <div class="pp-color-row"><span class="pp-color-label">Accent 3</span><input type="color" class="pp-color-input" id="cp3" value="#5BAD72" oninput="onColorPick()"><div class="pp-color-hex" id="cp3-hex">#5BAD72</div></div>
+            <div class="pp-custom-body-content">
+                <div class="pp-color-rows">
+                    <div class="pp-color-row"><span class="pp-color-label" style="color:var(--text-main);">Accent 1</span><input type="color" class="pp-color-input" id="cp1" oninput="onColorPick()"><div class="pp-color-hex" id="cp1-hex" style="color:var(--text-main);">#000</div></div>
+                    <div class="pp-color-row"><span class="pp-color-label" style="color:var(--text-main);">Accent 2</span><input type="color" class="pp-color-input" id="cp2" oninput="onColorPick()"><div class="pp-color-hex" id="cp2-hex" style="color:var(--text-main);">#000</div></div>
+                    <div class="pp-color-row"><span class="pp-color-label" style="color:var(--text-main);">Accent 3</span><input type="color" class="pp-color-input" id="cp3" oninput="onColorPick()"><div class="pp-color-hex" id="cp3-hex" style="color:var(--text-main);">#000</div></div>
+                    <div class="pp-color-row"><span class="pp-color-label" style="color:var(--text-main);">Acc. Text</span><input type="color" class="pp-color-input" id="cp-acc-text" oninput="onColorPick()"><div class="pp-color-hex" id="cp-acc-text-hex" style="color:var(--text-main);">#000</div></div>
+                </div>
+                <div class="pp-btn-row">
+                    <button class="pp-apply-btn" onclick="applyCustomAccents()">Apply</button>
+                    <button class="pp-apply-btn" style="background:var(--shape2s)" onclick="saveCustomPaletteSlot()">Save</button>
+                    <button class="pp-reset-btn" onclick="resetCustomAccents()">Reset</button>
+                </div>
+                <div class="pp-saved-palettes" id="saved-palettes-list"></div>
             </div>
-            <div class="pp-btn-row">
-                <button class="pp-apply-btn" onclick="applyCustomAccents()">Apply</button>
-                <button class="pp-apply-btn" style="background:var(--shape2s)" onclick="saveCustomPaletteSlot()">Save</button>
-                <button class="pp-reset-btn" onclick="resetCustomAccents()">Reset</button>
-            </div>
-            <div class="pp-saved-palettes" id="saved-palettes-list"></div>
         </div>
     </div>
-</div>
-
-<div id="palette-indicator" onclick="togglePalettePanel()" title="Change palette">
-    <div class="palette-dots"><div class="palette-dot" id="pd1" style="background-color:#000;"></div><div class="palette-dot" id="pd2" style="background-color:#000;"></div><div class="palette-dot" id="pd3" style="background-color:#000;"></div></div>
-    <span id="palette-name">Warm Amber</span>
 </div>
 
 <nav class="sidebar" id="sidebar">
@@ -552,6 +546,7 @@
     <a href="https://sd6387400-lang.github.io" class="sidebar-link"><i data-lucide="home" size="18"></i> Home</a>
     <a href="https://sd6387400-lang.github.io/My-GApps/" target="_blank" class="sidebar-link"><i data-lucide="globe" size="18"></i> Gapps Site</a>
     <a href="https://sd6387400-lang.github.io/creations.html" class="sidebar-link"><i data-lucide="palette" size="18"></i> Creations</a>
+    <div class="sidebar-link" id="customise-btn" onclick="togglePalettePanel()"><i data-lucide="sliders-horizontal" size="18"></i> Customise</div>
 
     <label class="sidebar-link" style="cursor: pointer;">
         <i data-lucide="upload-cloud" size="18"></i> Import Config
@@ -575,7 +570,7 @@
             <div>
                 <h1 id="title-os" style="letter-spacing:-1.5px; font-weight: 800; font-size: 2.2rem; line-height: 1.1; color: var(--text-main);">Android 16</h1>
                 <div style="margin-top: 8px; display:flex; align-items:center;">
-                    <input type="text" id="file-name" value="nikgapps" style="background:transparent; border:none; color:var(--accent); font-weight:800; font-size:0.9rem; outline:none; width: 85px;">
+                    <input type="text" id="file-name" value="nikgapps" style="background:transparent; border:none; color:var(--accent-text); font-weight:800; font-size:0.9rem; outline:none; width: 85px;">
                     <span style="color: var(--text-dim); opacity:0.6; font-weight:800; font-size:0.9rem;">.config</span>
                     <span id="conf-ver-badge" style="font-size: 0.65rem; background: var(--accent); color: white; padding: 2px 8px; border-radius: 6px; font-weight: 800; margin-left: 8px;">V--</span>
                 </div>
@@ -610,100 +605,78 @@
     <div class="modal-card">
         <div class="modal-close" onclick="closeModal()"><i data-lucide="x"></i></div>
         <div class="step-viewport">
-            <div class="step-container" id="step-slider" style="width: 1100%;">
-                
+            <div class="step-container" id="step-slider">
                 <div class="step-page active">
-                    <h2 style="color:var(--accent); margin-bottom:15px; font-weight:800;">Success! 🚀</h2>
-                    <p style="font-size:0.9rem; line-height:1.6; opacity:0.8; margin-bottom: 20px;">Your configuration file has been generated. How would you like to submit it to NikGApps?</p>
-                    <div class="modal-btns" style="flex-direction: column; gap: 10px;">
-                        <button class="modal-btn primary" onclick="startAutoMethod()">⚡ Auto Method (Token)</button>
-                        <button class="modal-btn" onclick="moveStep(1)">📚 Manual Tutorial</button>
+                    <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Success! 🚀</h2>
+                    <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Your configuration file has been generated. Ready to move to the next step?</p>
+                    <div class="modal-btns">
+                        <button class="modal-btn primary" onclick="moveStep(1)">Start Tutorial</button>
                     </div>
                 </div>
-
                 <div class="step-page">
-                    <h2 style="margin-bottom:10px; font-weight:800;">Step 1: Open GitHub</h2>
+                    <h2 style="color:var(--accent-text); margin-bottom:10px; font-weight:800;">Step 1: Open GitHub</h2>
                     <p style="font-size:0.9rem; line-height:1.4; opacity:0.8; margin-bottom:15px;">Login to GitHub and open the NikGApps repository.</p>
                     <a href="https://github.com/NikGApps/Config" target="_blank" class="modal-btn primary" style="display:block; margin-bottom:20px;">Open NikGApps Repo →</a>
                     <div class="modal-btns"><button class="modal-btn" onclick="moveStep(0)">Back</button><button class="modal-btn primary" onclick="moveStep(2)">Next</button></div>
                 </div>
                 <div class="step-page">
-                    <h2 style="margin-bottom:15px; font-weight:800;">Step 2: Forking</h2>
+                    <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Step 2: Forking</h2>
                     <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Click the 'Fork' button to create your own copy of the repository.</p>
                     <div class="modal-btns"><button class="modal-btn" onclick="moveStep(1)">Back</button><button class="modal-btn primary" onclick="moveStep(3)">Next</button></div>
                 </div>
                 <div class="step-page">
-                    <h2 style="margin-bottom:15px; font-weight:800;">Step 3: Branching</h2>
+                    <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Step 3: Branching</h2>
                     <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">(Optional) Create a new branch named 'my-config' for your changes.</p>
                     <div class="modal-btns"><button class="modal-btn" onclick="moveStep(2)">Back</button><button class="modal-btn primary" onclick="moveStep(4)">Next</button></div>
                 </div>
                 <div class="step-page">
-                    <h2 style="margin-bottom:15px; font-weight:800;">Step 4: Uploading</h2>
+                    <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Step 4: Uploading</h2>
                     <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Go to your Android folder and upload your new .config file.</p>
                     <div class="modal-btns"><button class="modal-btn" onclick="moveStep(3)">Back</button><button class="modal-btn primary" onclick="moveStep(5)">Next</button></div>
                 </div>
                 <div class="step-page">
-                    <h2 style="margin-bottom:15px; font-weight:800;">Step 5: Commit</h2>
+                    <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Step 5: Commit</h2>
                     <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Write a message like "Update my config" and commit the changes.</p>
                     <div class="modal-btns"><button class="modal-btn" onclick="moveStep(4)">Back</button><button class="modal-btn primary" onclick="moveStep(6)">Next</button></div>
                 </div>
                 <div class="step-page">
-                    <h2 style="margin-bottom:15px; font-weight:800;">Final Step</h2>
+                    <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Final Step</h2>
                     <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Submit a Pull Request. The maintainers will review your config! 🎉</p>
                     <div class="modal-btns"><button class="modal-btn" onclick="moveStep(5)">Back</button><button class="modal-btn primary" onclick="closeModal()">Done!</button></div>
                 </div>
-
-                <div class="step-page">
-                    <h2 style="margin-bottom:10px; font-weight:800;">GitHub Authentication</h2>
-                    <p style="font-size:0.8rem; line-height:1.4; opacity:0.8; margin-bottom:15px;">Provide a GitHub Personal Access Token (PAT). <br><br><b>Privacy Note:</b> Your token is saved securely in your browser's local storage and sent directly to GitHub. It is never shared with us.</p>
-                    <input type="password" id="gh-token-input" placeholder="ghp_xxxxxxxxxxxxxxx" style="width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--bg-base); color: var(--text-main); margin-bottom: 20px; font-family: var(--font-mono);">
-                    <div class="modal-btns"><button class="modal-btn" onclick="moveStep(0)">Back</button><button class="modal-btn primary" onclick="executeAutoGitHub()">Start Magic ✨</button></div>
-                </div>
-
-                <div class="step-page">
-                    <h2 style="margin-bottom:15px; font-weight:800;">Working Magic...</h2>
-                    <p id="gh-status-text" style="font-size:0.9rem; font-weight: 700; color: var(--accent); margin-bottom: 15px; text-align: center;">Authenticating...</p>
-                    <div style="width: 100%; height: 8px; background: rgba(var(--accent-rgb), 0.15); border-radius: 4px; overflow: hidden;">
-                        <div id="gh-progress-bar" style="width: 0%; height: 100%; background: var(--accent); transition: width 0.4s var(--m3-decel);"></div>
-                    </div>
-                </div>
-
-                <div class="step-page">
-                    <h2 style="margin-bottom:15px; font-weight:800; color: var(--shape3s);">Files Committed! 🎉</h2>
-                    <p style="font-size:0.9rem; line-height:1.6; opacity:0.8; margin-bottom: 20px;">Your config was successfully committed to your forked repository. How do you want to create the Pull Request?</p>
-                    
-                    <div class="modal-btns" style="flex-direction: column; gap: 10px; margin-top: 10px;">
-                        <button class="modal-btn primary" style="background: var(--shape3s); border-color: var(--shape3s);" onclick="createDirectPR()">
-                            <i data-lucide="zap" size="16"></i> Create PR Directly Here
-                        </button>
-                        <a id="pr-link-btn" href="#" target="_blank" class="modal-btn" style="display: flex;">
-                            <i data-lucide="external-link" size="16"></i> Review & Create on GitHub
-                        </a>
-                        <button class="modal-btn" onclick="closeModal()" style="margin-top: 10px;">Close</button>
-                    </div>
-                </div>
-
-                <div class="step-page">
-                    <h2 id="direct-pr-title" style="margin-bottom:15px; font-weight:800;">Submitting PR...</h2>
-                    <p id="direct-pr-status" style="font-size:0.9rem; line-height:1.6; opacity:0.8; margin-bottom: 20px; text-align: center;">Please wait while we send your request to NikGApps...</p>
-                    
-                    <div id="direct-pr-loader" style="display: flex; justify-content: center; margin-bottom: 20px;">
-                        <div style="width: 40px; height: 40px; border: 4px solid rgba(var(--accent-rgb), 0.2); border-top-color: var(--accent); border-radius: 50%; animation: spinRing 1s linear infinite;"></div>
-                    </div>
-
-                    <div id="direct-pr-action" class="modal-btns" style="display: none; flex-direction: column; gap: 10px;">
-                        <a id="final-pr-link" href="#" target="_blank" class="modal-btn primary" style="background: var(--shape3s); border-color: var(--shape3s); display: flex;">
-                            <i data-lucide="git-pull-request" size="16"></i> View Your Pull Request
-                        </a>
-                        <button class="modal-btn" onclick="closeModal()">Done</button>
-                    </div>
-                </div>
-
             </div>
         </div>
     </div>
 </div>
 <script>
+/* ═══════════════════════════════════════════════
+   SMART TEXT CONTRAST LOGIC
+═══════════════════════════════════════════════ */
+function adjustHex(hex, amount) {
+    if(!hex) return '#000000';
+    let c = hex.replace(/^#/, '');
+    if (c.length === 3) c = c.split('').map(x=>x+x).join('');
+    let r = parseInt(c.substring(0,2), 16) + amount;
+    let g = parseInt(c.substring(2,4), 16) + amount;
+    let b = parseInt(c.substring(4,6), 16) + amount;
+    r = Math.max(0, Math.min(255, r)); g = Math.max(0, Math.min(255, g)); b = Math.max(0, Math.min(255, b));
+    return `#${r.toString(16).padStart(2,'0')}${g.toString(16).padStart(2,'0')}${b.toString(16).padStart(2,'0')}`;
+}
+
+function getReadableAccent(hex, isDarkTheme) {
+    if(!hex || !hex.startsWith('#')) return hex;
+    let c = hex.replace(/^#/, '');
+    if (c.length === 3) c = c.split('').map(x=>x+x).join('');
+    let r = parseInt(c.substring(0,2), 16);
+    let g = parseInt(c.substring(2,4), 16);
+    let b = parseInt(c.substring(4,6), 16);
+    let yiq = ((r*299)+(g*587)+(b*114))/1000;
+    
+    if (!isDarkTheme) return adjustHex(hex, -100); 
+    else if (isDarkTheme && yiq < 120) return adjustHex(hex, 80);
+    return hex; 
+}
+
 /* ═══════════════════════════════════════════════
    THEME LOGIC (PALETTES, BACKGROUNDS, FONTS)
 ═══════════════════════════════════════════════ */
@@ -776,7 +749,13 @@ window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () 
 
 function applyPalette(idx) {
     const p = PALETTES[idx]; const v = isDark ? p.dark : p.light; const r = document.documentElement.style;
-    r.setProperty('--bg-base', v.bg); r.setProperty('--card-bg', v.card); r.setProperty('--text-main', v.text); r.setProperty('--text-dim', v.dim); r.setProperty('--sidebar-bg', v.sidebar); r.setProperty('--border', v.border);
+    
+    let tCol = v.text;
+    if (customAccents && customAccents.slot !== undefined && customAccents.text) {
+        tCol = customAccents.text;
+    }
+
+    r.setProperty('--bg-base', v.bg); r.setProperty('--card-bg', v.card); r.setProperty('--text-main', tCol); r.setProperty('--text-dim', v.dim); r.setProperty('--sidebar-bg', v.sidebar); r.setProperty('--border', v.border);
 
     const a1 = customAccents ? customAccents.a1 : v.a1; 
     const a2 = customAccents ? customAccents.a2 : v.a2; 
@@ -814,18 +793,6 @@ function applyPalette(idx) {
 
     document.body.classList.toggle('dark-mode', isDark); applyActiveAccent(activeAccentN, a1, a2, a3);
 
-    const d=[document.getElementById('pd1'),document.getElementById('pd2'),document.getElementById('pd3')];
-    if(d[0]) d[0].style.backgroundColor=a1; if(d[1]) d[1].style.backgroundColor=a2; if(d[2]) d[2].style.backgroundColor=a3;
-    
-    const pn = document.getElementById('palette-name'); 
-    if(pn) {
-        if (customAccents) {
-            pn.textContent = (customAccents.slot !== undefined && customAccents.slot !== -1) ? `Slot ${customAccents.slot + 1}` : 'Custom';
-        } else {
-            pn.textContent = p.name;
-        }
-    }
-
     document.getElementById('acc-sw-1').style.background = a1; document.getElementById('acc-sw-2').style.background = a2; document.getElementById('acc-sw-3').style.background = a3;
     ['acc-sw-1','acc-sw-2','acc-sw-3'].forEach((id,i) => document.getElementById(id).classList.toggle('active', i+1 === activeAccentN));
     ['system','light','dark'].forEach(m => document.getElementById('theme-'+m)?.classList.toggle('active', themeMode === m));
@@ -835,7 +802,16 @@ function applyPalette(idx) {
 function applyActiveAccent(n, a1, a2, a3) {
     const cols = { 1:a1, 2:a2, 3:a3 }; const col = cols[n] || a1; let r2=160, g2=104, b2=0;
     try { [r2,g2,b2] = hexToRgb(col); } catch(e){}
-    document.documentElement.style.setProperty('--accent', col); document.documentElement.style.setProperty('--accent-rgb', `${r2},${g2},${b2}`);
+    
+    document.documentElement.style.setProperty('--accent', col); 
+    document.documentElement.style.setProperty('--accent-rgb', `${r2},${g2},${b2}`);
+
+    if (customAccents && customAccents.text && customAccents.slot !== undefined) {
+        document.documentElement.style.setProperty('--accent-text', customAccents.text);
+    } else {
+        document.documentElement.style.setProperty('--accent-text', getReadableAccent(col, isDark));
+    }
+
     activeAccentN = n; localStorage.setItem('activeAccent', n);
     ['acc-sw-1','acc-sw-2','acc-sw-3'].forEach((id,i) => document.getElementById(id)?.classList.toggle('active', i+1 === n));
 }
@@ -860,7 +836,7 @@ document.getElementById('custom-font-upload').addEventListener('change', async (
         activeFontId = 'custom';
         const reader = new FileReader();
         reader.onload = function(evt) {
-            try { localStorage.setItem('customFontBase64', evt.target.result); localStorage.setItem('fontId', 'custom'); buildFontPicker(); } catch(err) { console.warn("Font too large"); }
+            try { localStorage.setItem('customFontBase64', evt.target.result); localStorage.setItem('fontId', 'custom'); buildFontPicker(); } catch(err) {}
         };
         reader.readAsDataURL(file);
     } catch(err) {}
@@ -908,22 +884,37 @@ function buildPalettePanel() {
             el.innerHTML = `<div class="pp-dots"><div class="pp-dot" style="background:${a1}"></div><div class="pp-dot" style="background:${a2}"></div><div class="pp-dot" style="background:${a3}"></div></div><span>${p.name}</span>`;
             el.onclick = () => {
                 palIdx = i; sessionStorage.setItem('palIdx', palIdx);
-                if(customAccents) { customAccents = null; localStorage.removeItem('custom_palette'); document.getElementById('pp-custom-trigger').classList.remove('active'); document.getElementById('cust-d1').style.background = '#888'; document.getElementById('cust-d2').style.background = '#888'; document.getElementById('cust-d3').style.background = '#888'; }
+                if(customAccents) { customAccents = null; localStorage.removeItem('custom_palette'); document.getElementById('pp-custom-trigger').classList.remove('active'); }
                 applyPalette(palIdx);
             };
             grid.appendChild(el);
         });
     });
     if(customAccents) {
-        document.getElementById('cust-d1').style.background = customAccents.a1; document.getElementById('cust-d2').style.background = customAccents.a2; document.getElementById('cust-d3').style.background = customAccents.a3; document.getElementById('pp-custom-trigger').classList.add('active');
+        document.getElementById('cust-d1').style.background = customAccents.a1; 
+        document.getElementById('cust-d2').style.background = customAccents.a2; 
+        document.getElementById('cust-d3').style.background = customAccents.a3; 
+        document.getElementById('cust-d4').style.background = customAccents.text; 
+        document.getElementById('pp-custom-trigger').classList.add('active');
     }
     buildFontPicker(); renderSavedPalettes();
 }
 
 let panelOpen = false;
-function togglePalettePanel() { panelOpen = !panelOpen; document.getElementById('palette-panel').classList.toggle('open', panelOpen); }
+function togglePalettePanel() { 
+    panelOpen = !panelOpen; 
+    document.getElementById('palette-panel').classList.toggle('open', panelOpen); 
+    const po = document.getElementById('palette-overlay');
+    if(po) po.classList.toggle('active', panelOpen);
+}
+
 document.addEventListener('click', e => {
-    if(panelOpen && !e.target.closest('#palette-panel') && !e.target.closest('#palette-indicator')) { panelOpen = false; document.getElementById('palette-panel').classList.remove('open'); }
+    if(panelOpen && !e.target.closest('#palette-panel') && !e.target.closest('#customise-btn')) { 
+        panelOpen = false; 
+        document.getElementById('palette-panel').classList.remove('open'); 
+        const po = document.getElementById('palette-overlay');
+        if(po) po.classList.remove('active');
+    }
 });
 
 /* ── Custom Accents & Saving ── */
@@ -933,14 +924,22 @@ function toggleCustomBody() {
     const chev = document.getElementById('custom-chevron'); if(chev) chev.style.transform = customBodyOpen ? 'rotate(180deg)' : '';
     if(customBodyOpen) {
         const p = PALETTES[palIdx]; const v = isDark ? p.dark : p.light;
-        const a1 = customAccents ? customAccents.a1 : v.a1; const a2 = customAccents ? customAccents.a2 : v.a2; const a3 = customAccents ? customAccents.a3 : v.a3;
+        const a1 = customAccents ? customAccents.a1 : v.a1; 
+        const a2 = customAccents ? customAccents.a2 : v.a2; 
+        const a3 = customAccents ? customAccents.a3 : v.a3;
+        const pText = customAccents && customAccents.text ? customAccents.text : getReadableAccent(a1, isDark);
+        
         document.getElementById('cp1').value = ensureFullHex(a1); document.getElementById('cp2').value = ensureFullHex(a2); document.getElementById('cp3').value = ensureFullHex(a3);
         document.getElementById('cp1-hex').textContent = a1; document.getElementById('cp2-hex').textContent = a2; document.getElementById('cp3-hex').textContent = a3;
+        
+        document.getElementById('cp-acc-text').value = ensureFullHex(pText); 
+        document.getElementById('cp-acc-text-hex').textContent = ensureFullHex(pText);
     }
 }
 
 function onColorPick() { 
     ['1','2','3'].forEach(n => { const v = document.getElementById('cp'+n).value; document.getElementById('cp'+n+'-hex').textContent = v; }); 
+    const tVal = document.getElementById('cp-acc-text').value; document.getElementById('cp-acc-text-hex').textContent = tVal;
 }
 
 function applyCustomAccents(slotIdx = -1) {
@@ -948,6 +947,7 @@ function applyCustomAccents(slotIdx = -1) {
         a1: document.getElementById('cp1').value, 
         a2: document.getElementById('cp2').value, 
         a3: document.getElementById('cp3').value,
+        text: document.getElementById('cp-acc-text').value,
         slot: slotIdx
     };
     localStorage.setItem('custom_palette', JSON.stringify(customAccents)); 
@@ -957,7 +957,7 @@ function applyCustomAccents(slotIdx = -1) {
 
 function resetCustomAccents() {
     customAccents = null; localStorage.removeItem('custom_palette'); applyPalette(palIdx);
-    document.getElementById('pp-custom-trigger').classList.remove('active'); document.getElementById('cust-d1').style.background = '#888'; document.getElementById('cust-d2').style.background = '#888'; document.getElementById('cust-d3').style.background = '#888';
+    document.getElementById('pp-custom-trigger').classList.remove('active'); 
     renderSavedPalettes();
 }
 
@@ -971,7 +971,13 @@ function ensureFullHex(hex) {
 
 function saveCustomPaletteSlot() {
     if(savedPalettes.length >= 10) { alert("Maximum 10 custom palettes saved. Delete one first."); return; }
-    const p = { a1: document.getElementById('cp1').value, a2: document.getElementById('cp2').value, a3: document.getElementById('cp3').value, id: Date.now() };
+    const p = { 
+        a1: document.getElementById('cp1').value, 
+        a2: document.getElementById('cp2').value, 
+        a3: document.getElementById('cp3').value, 
+        text: document.getElementById('cp-acc-text').value,
+        id: Date.now() 
+    };
     savedPalettes.push(p); 
     localStorage.setItem('saved_palettes', JSON.stringify(savedPalettes)); 
     applyCustomAccents(savedPalettes.length - 1);
@@ -982,6 +988,10 @@ function loadSavedPalette(idx) {
     document.getElementById('cp1').value = ensureFullHex(p.a1); 
     document.getElementById('cp2').value = ensureFullHex(p.a2); 
     document.getElementById('cp3').value = ensureFullHex(p.a3);
+    
+    const pText = p.text || getReadableAccent(p.a1, isDark);
+    document.getElementById('cp-acc-text').value = ensureFullHex(pText); 
+    
     onColorPick(); 
     applyCustomAccents(idx); 
 }
@@ -1013,9 +1023,10 @@ function renderSavedPalettes() {
             item.style.background = 'rgba(var(--accent-rgb),0.1)';
         }
         
+        const textCol = p.text || getReadableAccent(p.a1, isDark);
         item.innerHTML = `
             <div style="display:flex;gap:4px;align-items:center">
-                <div class="pp-dots"><div class="pp-dot" style="background:${p.a1}"></div><div class="pp-dot" style="background:${p.a2}"></div><div class="pp-dot" style="background:${p.a3}"></div></div> Slot ${idx+1}
+                <div class="pp-dots"><div class="pp-dot" style="background:${p.a1}"></div><div class="pp-dot" style="background:${p.a2}"></div><div class="pp-dot" style="background:${p.a3}"></div><div class="pp-dot" style="background:${textCol}"></div></div> Slot ${idx+1}
             </div>
             <div class="del-btn-wrap" onclick="delSavedPalette(event, ${idx})"><i data-lucide="x" size="12"></i></div>
         `;
@@ -1058,9 +1069,9 @@ const googleColors = ['var(--g-blue)', 'var(--g-red)', 'var(--g-yellow)', 'var(-
 const ignoredKeys = ["AndroidVersion", "Version", "LogDirectory", "InstallPartition", "Mode", "WipeDalvikCache", "WipeRuntimePermissions", "ExecuteBackupRestore", "UseZipConfig", "OverwriteWithZipConfig", "GmsOptimization", "GenerateLogs"];
 
 function toggleSidebar() { 
+    if(window.innerWidth >= 1000) return;
     const sidebar = document.getElementById('sidebar');
     const overlay = document.getElementById('overlay-ui');
-    if(window.innerWidth >= 1000) return;
     sidebar.classList.toggle('active');
     overlay.classList.toggle('active');
 }
@@ -1308,15 +1319,8 @@ function analyzeConfig(input) {
     reader.readAsText(file);
 }
 
-/* ═══════════════════════════════════════════════
-   GITHUB AUTO PR LOGIC
-═══════════════════════════════════════════════ */
-let generatedOutput = ""; // Store the config text globally
-let ghUsername = ""; // Store the username for the PR submission
-
-// Override your existing buildConfig to just generate text and show the initial prompt
 function buildConfig() {
-    generatedOutput = "";
+    let output = "";
     const allInputs = document.querySelectorAll('input[type="checkbox"]');
     templateData.forEach(line => {
         let updatedLine = line;
@@ -1326,212 +1330,34 @@ function buildConfig() {
                 updatedLine = `${key}=${input.checked ? '1' : '0'}`; 
             }
         });
-        generatedOutput += updatedLine + "\n";
+        output += updatedLine + "\n";
     });
-
-    // Automatically trigger the file download anyway so they have a local backup
     const name = document.getElementById('file-name').value || 'nikgapps';
-    const blob = new Blob([generatedOutput], { type: 'application/octet-stream' });
+    const blob = new Blob([output], { type: 'application/octet-stream' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = name + ".config";
     link.click();
 
-    // Show Modal at Step 0
     setTimeout(() => {
         const modal = document.getElementById('guidance-modal');
         modal.style.display = 'flex';
+        // Allow rendering frame before fading in for smooth transition
         requestAnimationFrame(() => modal.classList.add('show'));
         moveStep(0);
         lucide.createIcons();
     }, 600);
 }
 
-// Ensure the slider scales to 11 pages now (1100% width, each ~9.09%)
 function moveStep(idx) {
-    document.getElementById('step-slider').style.transform = `translateX(-${idx * (100/11)}%)`;
+    document.getElementById('step-slider').style.transform = `translateX(-${idx * 14.285}%)`;
     document.querySelectorAll('.step-page').forEach((p, i) => p.classList.toggle('active', i === idx));
-}
-
-function startAutoMethod() {
-    moveStep(7); // Jump to Token Input
-    const savedToken = localStorage.getItem('gh_pat_token');
-    if (savedToken) document.getElementById('gh-token-input').value = savedToken;
-}
-
-async function executeAutoGitHub() {
-    const token = document.getElementById('gh-token-input').value.trim();
-    if (!token) { alert("Please enter a GitHub token."); return; }
-    
-    // Save token securely in local storage
-    localStorage.setItem('gh_pat_token', token);
-    
-    moveStep(8); // Move to Progress Bar page
-    const statusText = document.getElementById('gh-status-text');
-    const progressBar = document.getElementById('gh-progress-bar');
-    
-    const updateProgress = (percent, text) => {
-        progressBar.style.width = `${percent}%`;
-        statusText.innerText = text;
-    };
-
-    try {
-        const headers = {
-            'Authorization': `Bearer ${token}`,
-            'Accept': 'application/vnd.github.v3+json'
-        };
-
-        // 1. Authenticate & Get Username
-        updateProgress(10, 'Authenticating user...');
-        const userRes = await fetch('https://api.github.com/user', { headers });
-        if (!userRes.ok) throw new Error("Invalid Token or Auth Failed");
-        const userData = await userRes.json();
-        ghUsername = userData.login; // Save globally for the PR step
-
-        // 2. Fork the Repository
-        updateProgress(30, 'Forking NikGApps/Config...');
-        await fetch('https://api.github.com/repos/NikGApps/Config/forks', { method: 'POST', headers });
-        
-        // Wait a few seconds because forking on GitHub is asynchronous
-        updateProgress(50, 'Waiting for fork to finalize...');
-        await new Promise(r => setTimeout(r, 4000)); 
-
-        // 3. Prepare File Data
-        updateProgress(70, 'Preparing configuration file...');
-        const osVerRaw = document.getElementById('title-os').innerText; // e.g. "Android 16"
-        const osVerStr = osVerRaw.replace('Android ', '').trim();
-        const fileName = document.getElementById('file-name').value || 'nikgapps';
-        
-        // Folder logic: "template16", "template15", etc.
-        const filePath = `template${osVerStr}/${fileName}.config`;
-        const contentBase64 = btoa(unescape(encodeURIComponent(generatedOutput))); 
-
-        // Check if file already exists so we can get its SHA to overwrite it
-        let fileSha = null;
-        const fileCheckRes = await fetch(`https://api.github.com/repos/${ghUsername}/Config/contents/${filePath}`, { headers });
-        if (fileCheckRes.ok) {
-            const fileData = await fileCheckRes.json();
-            fileSha = fileData.sha;
-        }
-
-        // 4. Commit the File to the Fork
-        updateProgress(85, 'Committing to your repository...');
-        const commitBody = {
-            message: `Add/Update ${fileName}.config for Android ${osVerStr} via Configurator`,
-            content: contentBase64
-        };
-        if (fileSha) commitBody.sha = fileSha; // Required by GitHub if replacing a file
-
-        const commitRes = await fetch(`https://api.github.com/repos/${ghUsername}/Config/contents/${filePath}`, {
-            method: 'PUT',
-            headers: { ...headers, 'Content-Type': 'application/json' },
-            body: JSON.stringify(commitBody)
-        });
-
-        if (!commitRes.ok) throw new Error("Failed to commit file to your fork.");
-
-        // 5. Done! Set up PR link
-        updateProgress(100, 'Success!');
-        setTimeout(() => {
-            moveStep(9); // Move to Success Page where they can choose to PR directly or manually
-            // Construct standard GitHub PR comparison URL for the "Review on GitHub" button
-            const prUrl = `https://github.com/NikGApps/Config/compare/master...${ghUsername}:Config:master`;
-            document.getElementById('pr-link-btn').href = prUrl;
-        }, 1000);
-
-    } catch (error) {
-        updateProgress(100, 'Error occurred!');
-        progressBar.style.background = 'var(--g-red)';
-        statusText.style.color = 'var(--g-red)';
-        statusText.innerText = "Error: " + error.message;
-        
-        // Allow user to go back and check token after 3 seconds
-        setTimeout(() => {
-            progressBar.style.background = 'var(--accent)';
-            statusText.style.color = 'var(--accent)';
-            moveStep(7); 
-        }, 3000);
-    }
-}
-
-async function createDirectPR() {
-    moveStep(10); // Move to "Submitting PR..." loading screen
-    
-    const token = localStorage.getItem('gh_pat_token');
-    const titleEl = document.getElementById('direct-pr-title');
-    const statusEl = document.getElementById('direct-pr-status');
-    const loaderEl = document.getElementById('direct-pr-loader');
-    const actionEl = document.getElementById('direct-pr-action');
-    const finalLink = document.getElementById('final-pr-link');
-
-    try {
-        const headers = {
-            'Authorization': `Bearer ${token}`,
-            'Accept': 'application/vnd.github.v3+json',
-            'Content-Type': 'application/json'
-        };
-
-        const osVerRaw = document.getElementById('title-os').innerText;
-        const osVerStr = osVerRaw.replace('Android ', '').trim();
-        const fileName = document.getElementById('file-name').value || 'nikgapps';
-
-        const prBody = {
-            title: `Add/Update ${fileName}.config for Android ${osVerStr}`,
-            head: `${ghUsername}:master`,
-            base: `master`,
-            body: `Automated PR generated via NikGApps Pro Configurator.\n\n- **User:** @${ghUsername}\n- **Android Version:** ${osVerStr}\n- **Config Name:** ${fileName}.config`
-        };
-
-        const res = await fetch('https://api.github.com/repos/NikGApps/Config/pulls', {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify(prBody)
-        });
-
-        const data = await res.json();
-
-        if (!res.ok) {
-            // Check if it's because a PR already exists from this user
-            if (data.errors && data.errors[0] && data.errors[0].message.includes('A pull request already exists')) {
-                throw new Error("A pull request from your master branch already exists! Please wait for the maintainers to merge it before creating another one.");
-            }
-            throw new Error(data.message || "Failed to create Pull Request.");
-        }
-
-        // Success State
-        loaderEl.style.display = 'none';
-        titleEl.innerText = "PR Created! 🎉";
-        titleEl.style.color = "var(--shape3s)";
-        statusEl.innerText = "Your configuration has been successfully sent to the NikGApps maintainers for review.";
-        finalLink.href = data.html_url; // Direct link to their new PR
-        actionEl.style.display = 'flex';
-
-    } catch(error) {
-        // Error State
-        loaderEl.style.display = 'none';
-        titleEl.innerText = "Oops! Something went wrong.";
-        titleEl.style.color = "var(--g-red)";
-        statusEl.innerText = error.message;
-        
-        finalLink.style.display = 'none'; // Hide the "View PR" link
-        actionEl.style.display = 'flex';
-    }
 }
 
 function closeModal() { 
     const modal = document.getElementById('guidance-modal');
     modal.classList.remove('show');
-    
-    // Reset the final screen if they run it again
-    setTimeout(() => {
-        modal.style.display = 'none';
-        document.getElementById('direct-pr-loader').style.display = 'flex';
-        document.getElementById('direct-pr-action').style.display = 'none';
-        document.getElementById('direct-pr-title').innerText = "Submitting PR...";
-        document.getElementById('direct-pr-title').style.color = "inherit";
-        document.getElementById('direct-pr-status').innerText = "Please wait while we send your request to NikGApps...";
-        document.getElementById('final-pr-link').style.display = 'flex';
-    }, 300);
+    setTimeout(() => modal.style.display = 'none', 300);
 }
 
 // Init everything
