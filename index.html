@@ -229,10 +229,12 @@
         /* ── Content Layout ── */
         .content { padding: 100px 24px 80px; max-width: 1100px; margin: 0 auto; width: 100%; display: flex; flex-direction: column; gap: 40px; position: relative; z-index: 1;}
         @media (min-width: 992px) {
-            .content { flex-direction: row; align-items: flex-start; }
+            .content { flex-direction: row; align-items: flex-start; margin-left: 320px; max-width: calc(100% - 320px); padding: 60px 40px; }
+            body[data-sidebar="3"] .content { margin-left: 360px; max-width: calc(100% - 360px); }
             .left-panel { flex: 1; position: sticky; top: 100px; }
             .right-panel { flex: 1.4; }
         }
+
 
         .glass-card { background: var(--card-bg); border: 1.5px solid var(--border); border-radius: 28px; padding: 40px; backdrop-filter: blur(16px); transition: background 0.5s, border-color 0.5s, box-shadow 0.3s; }
         body.dark-mode .glass-card { border-color: rgba(255,255,255,0.07); box-shadow: 0 0 0 1px rgba(255,255,255,0.04), 0 24px 64px rgba(0,0,0,0.5); }
