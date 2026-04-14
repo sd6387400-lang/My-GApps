@@ -301,15 +301,17 @@
         .modal-close:hover { opacity: 1; color: var(--accent); transform: scale(1.1); background: rgba(var(--accent-rgb), 0.2); }
         
         .step-viewport { overflow: hidden; width: 100%; margin-top: 10px; }
-        .step-container { display: flex; transition: transform 0.5s var(--m3-decel); width: 700%; }
-        .step-page { width: 14.285%; flex-shrink: 0; opacity: 0; transition: opacity 0.4s; padding: 5px; }
+        /* 11 steps total -> 1100% width */
+        .step-container { display: flex; transition: transform 0.5s var(--m3-decel); width: 1100%; }
+        /* 100 / 11 = 9.0909% */
+        .step-page { width: 9.0909%; flex-shrink: 0; opacity: 0; transition: opacity 0.4s; padding: 5px; }
         .step-page.active { opacity: 1; }
         
         .modal-btns { display: flex; gap: 12px; margin-top: 30px; }
-        .modal-btn { flex: 1; padding: 14px; border-radius: 14px; border: 1.5px solid var(--border); font-weight: 800; cursor: pointer; background: transparent; color: var(--text-main); transition: 0.2s var(--spring); text-align: center; text-decoration: none; font-size: 0.9rem; }
+        .modal-btn { flex: 1; padding: 14px; border-radius: 14px; border: 1.5px solid var(--border); font-weight: 800; cursor: pointer; background: transparent; color: var(--text-main); transition: 0.2s var(--spring); text-align: center; text-decoration: none; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .modal-btn:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
         .modal-btn.primary { background: var(--accent); color: white; border-color: var(--accent); box-shadow: 0 8px 20px rgba(var(--accent-rgb), 0.3); }
-        .modal-btn.primary:hover { opacity: 0.9; transform: translateY(-2px) scale(1.02); }
+        .modal-btn.primary:hover { opacity: 0.9; transform: translateY(-2px) scale(1.02); color: white; }
 
         /* ══════════════════════════════════════════════
            PALETTE PANEL
@@ -608,14 +610,17 @@
     <div class="modal-card">
         <div class="modal-close" onclick="closeModal()"><i data-lucide="x"></i></div>
         <div class="step-viewport">
-            <div class="step-container" id="step-slider">
+            <div class="step-container" id="step-slider" style="width: 1100%;">
+                
                 <div class="step-page active">
                     <h2 style="color:var(--accent); margin-bottom:15px; font-weight:800;">Success! 🚀</h2>
-                    <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Your configuration file has been generated. Ready to move to the next step?</p>
-                    <div class="modal-btns">
-                        <button class="modal-btn primary" onclick="moveStep(1)">Start Tutorial</button>
+                    <p style="font-size:0.9rem; line-height:1.6; opacity:0.8; margin-bottom: 20px;">Your configuration file has been generated. How would you like to submit it to NikGApps?</p>
+                    <div class="modal-btns" style="flex-direction: column; gap: 10px;">
+                        <button class="modal-btn primary" onclick="startAutoMethod()">⚡ Auto Method (Token)</button>
+                        <button class="modal-btn" onclick="moveStep(1)">📚 Manual Tutorial</button>
                     </div>
                 </div>
+
                 <div class="step-page">
                     <h2 style="margin-bottom:10px; font-weight:800;">Step 1: Open GitHub</h2>
                     <p style="font-size:0.9rem; line-height:1.4; opacity:0.8; margin-bottom:15px;">Login to GitHub and open the NikGApps repository.</p>
@@ -647,6 +652,53 @@
                     <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Submit a Pull Request. The maintainers will review your config! 🎉</p>
                     <div class="modal-btns"><button class="modal-btn" onclick="moveStep(5)">Back</button><button class="modal-btn primary" onclick="closeModal()">Done!</button></div>
                 </div>
+
+                <div class="step-page">
+                    <h2 style="margin-bottom:10px; font-weight:800;">GitHub Authentication</h2>
+                    <p style="font-size:0.8rem; line-height:1.4; opacity:0.8; margin-bottom:15px;">Provide a GitHub Personal Access Token (PAT). <br><br><b>Privacy Note:</b> Your token is saved securely in your browser's local storage and sent directly to GitHub. It is never shared with us.</p>
+                    <input type="password" id="gh-token-input" placeholder="ghp_xxxxxxxxxxxxxxx" style="width: 100%; padding: 12px; border-radius: 12px; border: 1.5px solid var(--border); background: var(--bg-base); color: var(--text-main); margin-bottom: 20px; font-family: var(--font-mono);">
+                    <div class="modal-btns"><button class="modal-btn" onclick="moveStep(0)">Back</button><button class="modal-btn primary" onclick="executeAutoGitHub()">Start Magic ✨</button></div>
+                </div>
+
+                <div class="step-page">
+                    <h2 style="margin-bottom:15px; font-weight:800;">Working Magic...</h2>
+                    <p id="gh-status-text" style="font-size:0.9rem; font-weight: 700; color: var(--accent); margin-bottom: 15px; text-align: center;">Authenticating...</p>
+                    <div style="width: 100%; height: 8px; background: rgba(var(--accent-rgb), 0.15); border-radius: 4px; overflow: hidden;">
+                        <div id="gh-progress-bar" style="width: 0%; height: 100%; background: var(--accent); transition: width 0.4s var(--m3-decel);"></div>
+                    </div>
+                </div>
+
+                <div class="step-page">
+                    <h2 style="margin-bottom:15px; font-weight:800; color: var(--shape3s);">Files Committed! 🎉</h2>
+                    <p style="font-size:0.9rem; line-height:1.6; opacity:0.8; margin-bottom: 20px;">Your config was successfully committed to your forked repository. How do you want to create the Pull Request?</p>
+                    
+                    <div class="modal-btns" style="flex-direction: column; gap: 10px; margin-top: 10px;">
+                        <button class="modal-btn primary" style="background: var(--shape3s); border-color: var(--shape3s);" onclick="createDirectPR()">
+                            <i data-lucide="zap" size="16"></i> Create PR Directly Here
+                        </button>
+                        <a id="pr-link-btn" href="#" target="_blank" class="modal-btn" style="display: flex;">
+                            <i data-lucide="external-link" size="16"></i> Review & Create on GitHub
+                        </a>
+                        <button class="modal-btn" onclick="closeModal()" style="margin-top: 10px;">Close</button>
+                    </div>
+                </div>
+
+                <div class="step-page">
+                    <h2 id="direct-pr-title" style="margin-bottom:15px; font-weight:800;">Submitting PR...</h2>
+                    <p id="direct-pr-status" style="font-size:0.9rem; line-height:1.6; opacity:0.8; margin-bottom: 20px; text-align: center;">Please wait while we send your request to NikGApps...</p>
+                    
+                    <div id="direct-pr-loader" style="display: flex; justify-content: center; margin-bottom: 20px;">
+                        <div style="width: 40px; height: 40px; border: 4px solid rgba(var(--accent-rgb), 0.2); border-top-color: var(--accent); border-radius: 50%; animation: spinRing 1s linear infinite;"></div>
+                    </div>
+
+                    <div id="direct-pr-action" class="modal-btns" style="display: none; flex-direction: column; gap: 10px;">
+                        <a id="final-pr-link" href="#" target="_blank" class="modal-btn primary" style="background: var(--shape3s); border-color: var(--shape3s); display: flex;">
+                            <i data-lucide="git-pull-request" size="16"></i> View Your Pull Request
+                        </a>
+                        <button class="modal-btn" onclick="closeModal()">Done</button>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -1256,8 +1308,15 @@ function analyzeConfig(input) {
     reader.readAsText(file);
 }
 
+/* ═══════════════════════════════════════════════
+   GITHUB AUTO PR LOGIC
+═══════════════════════════════════════════════ */
+let generatedOutput = ""; // Store the config text globally
+let ghUsername = ""; // Store the username for the PR submission
+
+// Override your existing buildConfig to just generate text and show the initial prompt
 function buildConfig() {
-    let output = "";
+    generatedOutput = "";
     const allInputs = document.querySelectorAll('input[type="checkbox"]');
     templateData.forEach(line => {
         let updatedLine = line;
@@ -1267,34 +1326,212 @@ function buildConfig() {
                 updatedLine = `${key}=${input.checked ? '1' : '0'}`; 
             }
         });
-        output += updatedLine + "\n";
+        generatedOutput += updatedLine + "\n";
     });
+
+    // Automatically trigger the file download anyway so they have a local backup
     const name = document.getElementById('file-name').value || 'nikgapps';
-    const blob = new Blob([output], { type: 'application/octet-stream' });
+    const blob = new Blob([generatedOutput], { type: 'application/octet-stream' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = name + ".config";
     link.click();
 
+    // Show Modal at Step 0
     setTimeout(() => {
         const modal = document.getElementById('guidance-modal');
         modal.style.display = 'flex';
-        // Allow rendering frame before fading in for smooth transition
         requestAnimationFrame(() => modal.classList.add('show'));
         moveStep(0);
         lucide.createIcons();
     }, 600);
 }
 
+// Ensure the slider scales to 11 pages now (1100% width, each ~9.09%)
 function moveStep(idx) {
-    document.getElementById('step-slider').style.transform = `translateX(-${idx * 14.285}%)`;
+    document.getElementById('step-slider').style.transform = `translateX(-${idx * (100/11)}%)`;
     document.querySelectorAll('.step-page').forEach((p, i) => p.classList.toggle('active', i === idx));
+}
+
+function startAutoMethod() {
+    moveStep(7); // Jump to Token Input
+    const savedToken = localStorage.getItem('gh_pat_token');
+    if (savedToken) document.getElementById('gh-token-input').value = savedToken;
+}
+
+async function executeAutoGitHub() {
+    const token = document.getElementById('gh-token-input').value.trim();
+    if (!token) { alert("Please enter a GitHub token."); return; }
+    
+    // Save token securely in local storage
+    localStorage.setItem('gh_pat_token', token);
+    
+    moveStep(8); // Move to Progress Bar page
+    const statusText = document.getElementById('gh-status-text');
+    const progressBar = document.getElementById('gh-progress-bar');
+    
+    const updateProgress = (percent, text) => {
+        progressBar.style.width = `${percent}%`;
+        statusText.innerText = text;
+    };
+
+    try {
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github.v3+json'
+        };
+
+        // 1. Authenticate & Get Username
+        updateProgress(10, 'Authenticating user...');
+        const userRes = await fetch('https://api.github.com/user', { headers });
+        if (!userRes.ok) throw new Error("Invalid Token or Auth Failed");
+        const userData = await userRes.json();
+        ghUsername = userData.login; // Save globally for the PR step
+
+        // 2. Fork the Repository
+        updateProgress(30, 'Forking NikGApps/Config...');
+        await fetch('https://api.github.com/repos/NikGApps/Config/forks', { method: 'POST', headers });
+        
+        // Wait a few seconds because forking on GitHub is asynchronous
+        updateProgress(50, 'Waiting for fork to finalize...');
+        await new Promise(r => setTimeout(r, 4000)); 
+
+        // 3. Prepare File Data
+        updateProgress(70, 'Preparing configuration file...');
+        const osVerRaw = document.getElementById('title-os').innerText; // e.g. "Android 16"
+        const osVerStr = osVerRaw.replace('Android ', '').trim();
+        const fileName = document.getElementById('file-name').value || 'nikgapps';
+        
+        // Folder logic: "template16", "template15", etc.
+        const filePath = `template${osVerStr}/${fileName}.config`;
+        const contentBase64 = btoa(unescape(encodeURIComponent(generatedOutput))); 
+
+        // Check if file already exists so we can get its SHA to overwrite it
+        let fileSha = null;
+        const fileCheckRes = await fetch(`https://api.github.com/repos/${ghUsername}/Config/contents/${filePath}`, { headers });
+        if (fileCheckRes.ok) {
+            const fileData = await fileCheckRes.json();
+            fileSha = fileData.sha;
+        }
+
+        // 4. Commit the File to the Fork
+        updateProgress(85, 'Committing to your repository...');
+        const commitBody = {
+            message: `Add/Update ${fileName}.config for Android ${osVerStr} via Configurator`,
+            content: contentBase64
+        };
+        if (fileSha) commitBody.sha = fileSha; // Required by GitHub if replacing a file
+
+        const commitRes = await fetch(`https://api.github.com/repos/${ghUsername}/Config/contents/${filePath}`, {
+            method: 'PUT',
+            headers: { ...headers, 'Content-Type': 'application/json' },
+            body: JSON.stringify(commitBody)
+        });
+
+        if (!commitRes.ok) throw new Error("Failed to commit file to your fork.");
+
+        // 5. Done! Set up PR link
+        updateProgress(100, 'Success!');
+        setTimeout(() => {
+            moveStep(9); // Move to Success Page where they can choose to PR directly or manually
+            // Construct standard GitHub PR comparison URL for the "Review on GitHub" button
+            const prUrl = `https://github.com/NikGApps/Config/compare/master...${ghUsername}:Config:master`;
+            document.getElementById('pr-link-btn').href = prUrl;
+        }, 1000);
+
+    } catch (error) {
+        updateProgress(100, 'Error occurred!');
+        progressBar.style.background = 'var(--g-red)';
+        statusText.style.color = 'var(--g-red)';
+        statusText.innerText = "Error: " + error.message;
+        
+        // Allow user to go back and check token after 3 seconds
+        setTimeout(() => {
+            progressBar.style.background = 'var(--accent)';
+            statusText.style.color = 'var(--accent)';
+            moveStep(7); 
+        }, 3000);
+    }
+}
+
+async function createDirectPR() {
+    moveStep(10); // Move to "Submitting PR..." loading screen
+    
+    const token = localStorage.getItem('gh_pat_token');
+    const titleEl = document.getElementById('direct-pr-title');
+    const statusEl = document.getElementById('direct-pr-status');
+    const loaderEl = document.getElementById('direct-pr-loader');
+    const actionEl = document.getElementById('direct-pr-action');
+    const finalLink = document.getElementById('final-pr-link');
+
+    try {
+        const headers = {
+            'Authorization': `Bearer ${token}`,
+            'Accept': 'application/vnd.github.v3+json',
+            'Content-Type': 'application/json'
+        };
+
+        const osVerRaw = document.getElementById('title-os').innerText;
+        const osVerStr = osVerRaw.replace('Android ', '').trim();
+        const fileName = document.getElementById('file-name').value || 'nikgapps';
+
+        const prBody = {
+            title: `Add/Update ${fileName}.config for Android ${osVerStr}`,
+            head: `${ghUsername}:master`,
+            base: `master`,
+            body: `Automated PR generated via NikGApps Pro Configurator.\n\n- **User:** @${ghUsername}\n- **Android Version:** ${osVerStr}\n- **Config Name:** ${fileName}.config`
+        };
+
+        const res = await fetch('https://api.github.com/repos/NikGApps/Config/pulls', {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify(prBody)
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+            // Check if it's because a PR already exists from this user
+            if (data.errors && data.errors[0] && data.errors[0].message.includes('A pull request already exists')) {
+                throw new Error("A pull request from your master branch already exists! Please wait for the maintainers to merge it before creating another one.");
+            }
+            throw new Error(data.message || "Failed to create Pull Request.");
+        }
+
+        // Success State
+        loaderEl.style.display = 'none';
+        titleEl.innerText = "PR Created! 🎉";
+        titleEl.style.color = "var(--shape3s)";
+        statusEl.innerText = "Your configuration has been successfully sent to the NikGApps maintainers for review.";
+        finalLink.href = data.html_url; // Direct link to their new PR
+        actionEl.style.display = 'flex';
+
+    } catch(error) {
+        // Error State
+        loaderEl.style.display = 'none';
+        titleEl.innerText = "Oops! Something went wrong.";
+        titleEl.style.color = "var(--g-red)";
+        statusEl.innerText = error.message;
+        
+        finalLink.style.display = 'none'; // Hide the "View PR" link
+        actionEl.style.display = 'flex';
+    }
 }
 
 function closeModal() { 
     const modal = document.getElementById('guidance-modal');
     modal.classList.remove('show');
-    setTimeout(() => modal.style.display = 'none', 300);
+    
+    // Reset the final screen if they run it again
+    setTimeout(() => {
+        modal.style.display = 'none';
+        document.getElementById('direct-pr-loader').style.display = 'flex';
+        document.getElementById('direct-pr-action').style.display = 'none';
+        document.getElementById('direct-pr-title').innerText = "Submitting PR...";
+        document.getElementById('direct-pr-title').style.color = "inherit";
+        document.getElementById('direct-pr-status').innerText = "Please wait while we send your request to NikGApps...";
+        document.getElementById('final-pr-link').style.display = 'flex';
+    }, 300);
 }
 
 // Init everything
