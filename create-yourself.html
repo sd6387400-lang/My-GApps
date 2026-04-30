@@ -1514,11 +1514,11 @@
             display: flex;
             align-items: flex-start;
             transition: transform 0.5s var(--m3-decel);
-            width: 1300%;
+            width: 1400%;
         }
 
         .step-page {
-            width: 7.6923%;
+            width: 7.142857%;
             flex-shrink: 0;
             opacity: 0;
             transition: opacity 0.4s;
@@ -1555,7 +1555,7 @@
             color: var(--accent-text);
             transform: translateY(-2px);
         }
-        
+
         .modal-btn:active {
             transform: scale(0.96);
         }
@@ -2340,12 +2340,17 @@
                     <!-- Step 0: Choice -->
                     <div class="step-page active">
                         <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Success! 🚀</h2>
-                        <p style="font-size:0.9rem; line-height:1.6; opacity:0.8; margin-bottom:15px;">Your configuration file has been generated! You can download it directly, or let us automate the upload process for you.</p>
-                        <button class="modal-btn" style="display:flex; justify-content:center; align-items:center; width:100%; margin-bottom:15px; background:rgba(var(--accent-rgb),0.06); border-color:var(--accent); color:var(--accent-text);" onclick="downloadConfigFile()">
+                        <p style="font-size:0.9rem; line-height:1.6; opacity:0.8; margin-bottom:15px;">Your
+                            configuration file has been generated! You can download it directly, or let us automate the
+                            upload process for you.</p>
+                        <button class="modal-btn"
+                            style="display:flex; justify-content:center; align-items:center; width:100%; margin-bottom:15px; background:rgba(var(--accent-rgb),0.06); border-color:var(--accent); color:var(--accent-text);"
+                            onclick="downloadConfigFile()">
                             <i data-lucide="download" size="18" style="margin-right:8px;"></i> Download Config File
                         </button>
                         <div class="modal-btns" style="flex-direction:column; gap:12px; margin-top:0;">
-                            <button class="modal-btn primary" onclick="moveStep(1)">Automated Token Method (Recommended)</button>
+                            <button class="modal-btn primary" onclick="moveStep(1)">Automated Token Method
+                                (Recommended)</button>
                             <button class="modal-btn" onclick="moveStep(7)">Manual Method Guide</button>
                         </div>
                     </div>
@@ -2452,9 +2457,14 @@
 
                     <!-- MANUAL METHOD STEPS (7-12) -->
                     <div class="step-page">
-                        <h2 style="color:var(--accent-text); margin-bottom:10px; font-weight:800;">Step 1: Download & Open GitHub</h2>
-                        <p style="font-size:0.9rem; line-height:1.4; opacity:0.8; margin-bottom:15px;">If you haven't yet, download your config file below, then login to GitHub and open the NikGApps repository.</p>
-                        <button class="modal-btn" style="display:flex; justify-content:center; align-items:center; width:100%; margin-bottom:15px; border-color:var(--accent); color:var(--accent-text);" onclick="downloadConfigFile()">
+                        <h2 style="color:var(--accent-text); margin-bottom:10px; font-weight:800;">Step 1: Download &
+                            Open GitHub</h2>
+                        <p style="font-size:0.9rem; line-height:1.4; opacity:0.8; margin-bottom:15px;">If you haven't
+                            yet, download your config file below, then login to GitHub and open the NikGApps repository.
+                        </p>
+                        <button class="modal-btn"
+                            style="display:flex; justify-content:center; align-items:center; width:100%; margin-bottom:15px; border-color:var(--accent); color:var(--accent-text);"
+                            onclick="downloadConfigFile()">
                             <i data-lucide="download" size="16" style="margin-right:8px;"></i> Download Config File
                         </button>
                         <a href="https://github.com/NikGApps/Config" target="_blank" class="modal-btn primary"
@@ -2463,32 +2473,45 @@
                                 class="modal-btn primary" onclick="moveStep(8)">Next</button></div>
                     </div>
                     <div class="step-page">
-                        <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Step 2: Fork the Repo</h2>
-                        <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Click the <strong>'Fork'</strong> button in the top-right corner of the NikGApps/Config repository page to create a copy in your own GitHub account.</p>
+                        <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Step 2: Fork the Repo
+                        </h2>
+                        <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Click the <strong>'Fork'</strong>
+                            button in the top-right corner of the NikGApps/Config repository page to create a copy in
+                            your own GitHub account.</p>
                         <div class="modal-btns"><button class="modal-btn" onclick="moveStep(7)">Back</button><button
                                 class="modal-btn primary" onclick="moveStep(9)">Next</button></div>
                     </div>
                     <div class="step-page">
-                        <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Step 3: Upload Config</h2>
-                        <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">In your new forked repository, open the folder for your Android version. Click <strong>Add file > Upload files</strong> and upload your downloaded <code>.config</code> file.</p>
+                        <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Step 3: Upload Config
+                        </h2>
+                        <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">In your new forked repository, open
+                            the folder for your Android version. Click <strong>Add file > Upload files</strong> and
+                            upload your downloaded <code>.config</code> file.</p>
                         <div class="modal-btns"><button class="modal-btn" onclick="moveStep(8)">Back</button><button
                                 class="modal-btn primary" onclick="moveStep(10)">Next</button></div>
                     </div>
                     <div class="step-page">
-                        <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Step 4: Commit Changes</h2>
-                        <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Scroll down to the "Commit changes" box. Write a simple message like "Add my config" and click the green <strong>Commit changes</strong> button.</p>
+                        <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Step 4: Commit
+                            Changes</h2>
+                        <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Scroll down to the "Commit changes"
+                            box. Write a simple message like "Add my config" and click the green <strong>Commit
+                                changes</strong> button.</p>
                         <div class="modal-btns"><button class="modal-btn" onclick="moveStep(9)">Back</button><button
                                 class="modal-btn primary" onclick="moveStep(11)">Next</button></div>
                     </div>
                     <div class="step-page">
-                        <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Step 5: Pull Request</h2>
-                        <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Go back to the main NikGApps/Config repo, click the <strong>Pull requests</strong> tab, and click <strong>New pull request</strong>. Follow the prompts to submit it.</p>
+                        <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Step 5: Pull Request
+                        </h2>
+                        <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Go back to the main NikGApps/Config
+                            repo, click the <strong>Pull requests</strong> tab, and click <strong>New pull
+                                request</strong>. Follow the prompts to submit it.</p>
                         <div class="modal-btns"><button class="modal-btn" onclick="moveStep(10)">Back</button><button
                                 class="modal-btn primary" onclick="moveStep(12)">Next</button></div>
                     </div>
                     <div class="step-page">
                         <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Final Step</h2>
-                        <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Submit a Pull Request. The maintainers will review your config! 🎉</p>
+                        <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Submit a Pull Request. The
+                            maintainers will review your config! 🎉</p>
                         <p id="manual-sf-text"
                             style="font-size:0.8rem; line-height:1.6; opacity:0.7; margin-top:15px; margin-bottom:15px;">
                             After it's merged, you can find your zip on SourceForge.</p>
@@ -2497,6 +2520,20 @@
                             SourceForge</a>
                         <div class="modal-btns"><button class="modal-btn" onclick="moveStep(11)">Back</button><button
                                 class="modal-btn primary" onclick="closeModal()">Done!</button></div>
+                    </div>
+                    
+                    <!-- NEW STEP 13: File Tree for Existing Repo -->
+                    <div class="step-page">
+                        <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Manage Existing Configs</h2>
+                        <p style="font-size:0.9rem; line-height:1.6; opacity:0.8; margin-bottom:10px;">We found your existing Config repository! Here are your current config files. You can delete them before proceeding to upload your new one.</p>
+                        <div id="file-tree-container" style="max-height: 200px; overflow-y: auto; background: var(--card-bg); border-radius: 12px; border: 1px solid var(--border); padding: 10px; margin-bottom: 15px;">
+                            <!-- tree injected here -->
+                        </div>
+                        <div class="modal-btns">
+                            <button class="modal-btn" onclick="moveStep(1)">Back</button>
+                            <button class="modal-btn" style="border-color:red; color:red;" onclick="deleteAllConfigs()">Delete All</button>
+                            <button class="modal-btn primary" onclick="skipToUpload()">Proceed to Upload</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -3175,7 +3212,7 @@
                 if (swParentInput) {
                     const swParentId = swParentInput.id.split('-')[1];
                     const subGroup = document.getElementById(`sub-of-${swParentId}`);
-                    
+
                     if (currentInput.checked) {
                         swParentInput.checked = false;
                         if (subGroup) {
@@ -3222,14 +3259,14 @@
         let tempParsedLines = [];
         let tempImportedOS = null;
         let tempErrorMessages = [];
-        
+
         function processImportedLines() {
             let invalidVars = [];
-            
+
             tempParsedLines.forEach(pair => {
                 const key = pair.key;
                 const val = pair.val;
-                
+
                 const targetInput = document.querySelector(`input[data-key="${key}"]`);
                 if (targetInput) {
                     targetInput.checked = (val === '1');
@@ -3261,7 +3298,7 @@
             if (tempErrorMessages.length > 0) {
                 alert("Import Warnings:\n\n" + tempErrorMessages.join("\n\n"));
             }
-            
+
             tempErrorMessages = [];
             tempParsedLines = [];
         }
@@ -3274,7 +3311,7 @@
                 const lines = e.target.result.split('\n');
                 tempParsedLines = [];
                 tempImportedOS = null;
-                
+
                 lines.forEach(line => {
                     const cleanLine = line.split('#')[0].trim();
                     if (cleanLine.includes('=')) {
@@ -3282,19 +3319,19 @@
                         if (key.trim() === 'AndroidVersion') {
                             tempImportedOS = val.trim();
                         } else {
-                            tempParsedLines.push({key: key.trim(), val: val.trim()});
+                            tempParsedLines.push({ key: key.trim(), val: val.trim() });
                         }
                     }
                 });
 
                 const currentOS = document.getElementById('title-os').innerText.replace('Android ', '').trim();
-                
+
                 if (tempImportedOS && tempImportedOS !== currentOS) {
                     showImportModal(tempImportedOS, currentOS);
                 } else {
                     processImportedLines();
                 }
-                
+
                 input.value = '';
             };
             reader.readAsText(file);
@@ -3336,7 +3373,7 @@
 
         function switchAndLoad(os) {
             closeImportModal();
-            
+
             const links = document.querySelectorAll('#os-list .sidebar-link');
             let targetEl = null;
             links.forEach(link => {
@@ -3349,12 +3386,12 @@
             document.querySelectorAll('.sidebar-link').forEach(i => i.classList.remove('active'));
             targetEl.classList.add('active');
             document.getElementById('title-os').innerText = `Android ${os}`;
-            
+
             triggerFolderLoader(async () => {
                 await loadTemplate(os);
                 processImportedLines();
             });
-            
+
             if (window.innerWidth < 1000) toggleSidebar();
         }
 
@@ -3362,7 +3399,7 @@
             closeImportModal();
             processImportedLines();
         }
-        
+
         function switchAndLoadSelected() {
             const os = document.getElementById('import-os-select').value;
             switchAndLoad(os);
@@ -3375,6 +3412,13 @@
         let githubUser = "";
 
         function buildConfig() {
+            const nameInput = document.getElementById('file-name').value.trim();
+            if (!nameInput || nameInput.toLowerCase() === 'nikgapps') {
+                alert("Please rename your config file. You cannot generate a config named 'nikgapps.config'.");
+                document.getElementById('file-name').focus();
+                return;
+            }
+            
             let output = "";
             const allInputs = document.querySelectorAll('input[type="checkbox"]');
             templateData.forEach(line => {
@@ -3387,7 +3431,7 @@
                 });
                 output += updatedLine + "\n";
             });
-            const name = document.getElementById('file-name').value || 'nikgapps';
+            const name = nameInput;
 
             windowConfigData = output;
             windowConfigName = name;
@@ -3435,12 +3479,12 @@
         function downloadConfigFile() {
             const data = localStorage.getItem('tempConfigData') || windowConfigData;
             const name = localStorage.getItem('tempConfigName') || windowConfigName;
-            
+
             if (!data || !name) {
                 console.error("Config data missing");
                 return;
             }
-            
+
             const blob = new Blob([data], { type: 'application/octet-stream' });
             const link = document.createElement('a');
             link.href = URL.createObjectURL(blob);
@@ -3448,7 +3492,7 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
-            
+
             setTimeout(() => {
                 localStorage.removeItem('tempConfigData');
                 localStorage.removeItem('tempConfigName');
@@ -3464,8 +3508,9 @@
         }
 
         function moveStep(idx) {
-            document.getElementById('step-slider').style.transform = `translateX(-${idx * 7.6923}%)`;
             const pages = document.querySelectorAll('.step-page');
+            const stepPct = 100 / pages.length;
+            document.getElementById('step-slider').style.transform = `translateX(-${idx * stepPct}%)`;
             pages.forEach((p, i) => p.classList.toggle('active', i === idx));
             setTimeout(updateModalHeight, 10);
         }
@@ -3506,25 +3551,165 @@
                     headers: { "Authorization": `token ${tokenInput}` }
                 });
                 if (res.ok) {
+                    const scopes = res.headers.get('X-OAuth-Scopes') || '';
+                    if (!scopes.includes('public_repo') && !scopes.includes('repo')) {
+                        errorEl.innerText = "Token missing 'public_repo' scope. Please check the 'public_repo' box when creating your token.";
+                        errorEl.style.display = "block";
+                        updateModalHeight();
+                        btn.innerText = "Start";
+                        btn.disabled = false;
+                        return;
+                    }
                     const data = await res.json();
                     githubToken = tokenInput;
                     githubUser = data.login;
                     document.getElementById('gh-username-display').innerText = githubUser;
                     errorEl.style.display = "none";
                     updateModalHeight();
-                    moveStep(2);
+                    await checkIfRepoExists();
                 } else {
                     errorEl.innerText = "Invalid token. Make sure it has public_repo scope.";
                     errorEl.style.display = "block";
                     updateModalHeight();
+                    btn.innerText = "Start";
+                    btn.disabled = false;
                 }
             } catch (e) {
                 errorEl.innerText = "Network error.";
                 errorEl.style.display = "block";
                 updateModalHeight();
+                btn.innerText = "Start";
+                btn.disabled = false;
+            }
+        }
+
+        async function checkIfRepoExists() {
+            const btn = document.getElementById('btn-verify-token');
+            btn.innerText = "Checking & Syncing Repo...";
+            try {
+                const res = await fetch(`https://api.github.com/repos/${githubUser}/Config`, {
+                    headers: { "Authorization": `token ${githubToken}` }
+                });
+                if (res.ok) {
+                    try {
+                        await fetch(`https://api.github.com/repos/${githubUser}/Config/merge-upstream`, {
+                            method: "POST",
+                            headers: { 
+                                "Authorization": `token ${githubToken}`,
+                                "Content-Type": "application/json"
+                            },
+                            body: JSON.stringify({ branch: "master" })
+                        });
+                    } catch(e) {}
+                    await loadFileTree();
+                } else {
+                    moveStep(2);
+                }
+            } catch(e) {
+                moveStep(2);
             }
             btn.innerText = "Start";
             btn.disabled = false;
+        }
+
+        async function loadFileTree() {
+            moveStep(13); // The new step index
+            const container = document.getElementById('file-tree-container');
+            container.innerHTML = '<p style="text-align:center; padding:20px;">Loading configs...</p>';
+            updateModalHeight();
+            try {
+                const folders = ['10', '11', '12.1', '12', '13', '14', '15', '16'];
+                let allFiles = [];
+                for(let f of folders) {
+                    try {
+                        const res = await fetch(`https://api.github.com/repos/${githubUser}/Config/contents/${f}`, {
+                            headers: { "Authorization": `token ${githubToken}` }
+                        });
+                        if (res.ok) {
+                            const data = await res.json();
+                            if (Array.isArray(data)) {
+                                data.forEach(item => {
+                                    if (item.name.endsWith('.config')) {
+                                        allFiles.push({ folder: f, name: item.name, path: item.path, sha: item.sha });
+                                    }
+                                });
+                            }
+                        }
+                    } catch(e) {}
+                }
+                if (allFiles.length === 0) {
+                    container.innerHTML = '<p style="text-align:center; padding:20px;">No existing configs found.</p>';
+                    updateModalHeight();
+                    return;
+                }
+                
+                let html = '<ul style="list-style:none; padding:0; margin:0; font-size:0.85rem;">';
+                allFiles.forEach(file => {
+                    html += `
+                    <li id="file-${file.sha}" style="display:flex; justify-content:space-between; align-items:center; padding:8px 5px; border-bottom:1px solid rgba(0,0,0,0.05);">
+                        <span>Android ${file.folder} / <strong>${file.name}</strong></span>
+                        <button onclick="deleteConfig('${file.path}', '${file.sha}')" style="background:transparent; border:none; color:red; cursor:pointer; font-weight:bold;">X</button>
+                    </li>`;
+                });
+                html += '</ul>';
+                container.innerHTML = html;
+            } catch(e) {
+                container.innerHTML = '<p style="text-align:center; padding:20px;">Error loading configs.</p>';
+            }
+            updateModalHeight();
+        }
+
+        async function deleteConfig(path, sha) {
+            const li = document.getElementById('file-' + sha);
+            if (li) li.style.opacity = '0.5';
+            try {
+                await fetch(`https://api.github.com/repos/${githubUser}/Config/contents/${path}`, {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": `token ${githubToken}`,
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        message: "Delete " + path,
+                        sha: sha
+                    })
+                });
+                if (li) li.remove();
+                updateModalHeight();
+            } catch(e) {
+                alert("Failed to delete " + path);
+                if (li) li.style.opacity = '1';
+            }
+        }
+
+        async function deleteAllConfigs() {
+            const container = document.getElementById('file-tree-container');
+            const btns = container.querySelectorAll('button');
+            if (btns.length === 0) return;
+            if (!confirm("Are you sure you want to delete all existing config files in your repository?")) return;
+            
+            const btnDelAll = document.querySelector('button[onclick="deleteAllConfigs()"]');
+            const btnProceed = document.querySelector('button[onclick="skipToUpload()"]');
+            
+            if (btnProceed) btnProceed.disabled = true;
+            if (btnDelAll) btnDelAll.disabled = true;
+            
+            let count = 0;
+            const total = btns.length;
+            
+            for (let btn of btns) {
+                count++;
+                if (btnDelAll) btnDelAll.innerText = `Deleting (${count}/${total})...`;
+                btn.click();
+                await new Promise(r => setTimeout(r, 400));
+            }
+            
+            if (btnDelAll) btnDelAll.innerText = "Delete All";
+            if (btnProceed) btnProceed.disabled = false;
+        }
+
+        function skipToUpload() {
+            startUpload();
         }
 
         async function startForking() {
@@ -3678,8 +3863,11 @@
                     });
                 }
 
-                if (prRes.ok || prRes.status === 422) {
+                if (prRes.ok) {
                     status.innerText = "Pull Request successfully created!";
+                    document.getElementById('btn-finish-auto').style.display = "block";
+                } else if (prRes.status === 422) {
+                    status.innerText = "Your new config was successfully added to your existing open Pull Request!";
                     document.getElementById('btn-finish-auto').style.display = "block";
                 } else {
                     const err = await prRes.json();
