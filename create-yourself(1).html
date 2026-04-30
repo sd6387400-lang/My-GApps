@@ -302,8 +302,8 @@
         .modal-close:hover { opacity: 1; color: var(--accent); transform: scale(1.1); background: rgba(var(--accent-rgb), 0.2); }
         
         .step-viewport { overflow: hidden; width: 100%; margin-top: 10px; }
-        .step-container { display: flex; transition: transform 0.5s var(--m3-decel); width: 700%; }
-        .step-page { width: 14.285%; flex-shrink: 0; opacity: 0; transition: opacity 0.4s; padding: 5px; }
+        .step-container { display: flex; transition: transform 0.5s var(--m3-decel); width: 1300%; }
+        .step-page { width: 7.6923%; flex-shrink: 0; opacity: 0; transition: opacity 0.4s; padding: 5px; }
         .step-page.active { opacity: 1; }
         
         .modal-btns { display: flex; gap: 12px; margin-top: 30px; }
@@ -606,45 +606,135 @@
         <div class="modal-close" onclick="closeModal()"><i data-lucide="x"></i></div>
         <div class="step-viewport">
             <div class="step-container" id="step-slider">
+                <!-- Step 0: Choice -->
                 <div class="step-page active">
                     <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Success! 🚀</h2>
-                    <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Your configuration file has been generated. Ready to move to the next step?</p>
-                    <div class="modal-btns">
-                        <button class="modal-btn primary" onclick="moveStep(1)">Start Tutorial</button>
+                    <p style="font-size:0.9rem; line-height:1.6; opacity:0.8; margin-bottom:20px;">Your configuration file has been generated. How would you like to proceed?</p>
+                    <div class="modal-btns" style="flex-direction:column; gap:12px;">
+                        <button class="modal-btn primary" onclick="moveStep(1)">Automated Token Method (Recommended)</button>
+                        <button class="modal-btn" onclick="moveStep(7)">Manual Method Guide</button>
                     </div>
                 </div>
+                
+                <!-- AUTOMATED METHOD STEPS (1-6) -->
+                <div class="step-page">
+                    <h2 style="color:var(--accent-text); margin-bottom:10px; font-weight:800;">Token Authentication</h2>
+                    <p style="font-size:0.85rem; line-height:1.4; opacity:0.8; margin-bottom:10px;">To automate the upload, we need a GitHub Personal Access Token.</p>
+                    <button class="modal-btn" style="margin-bottom:15px; font-size:0.75rem; padding:8px; border-color:var(--accent); color:var(--accent-text);" onclick="openTokenGuide()">How to make a token?</button>
+                    <input type="password" id="gh-token-input" placeholder="ghp_xxxxxxxxxxxx" style="width:100%; padding:12px; border-radius:12px; border:2px solid var(--border); background:var(--card-bg); color:var(--text-main); outline:none; margin-bottom:10px;">
+                    <p id="token-error" style="color:red; font-size:0.75rem; display:none;">Invalid token or network error.</p>
+                    <div class="modal-btns">
+                        <button class="modal-btn" onclick="moveStep(0)">Back</button>
+                        <button class="modal-btn primary" id="btn-verify-token" onclick="verifyToken()">Start</button>
+                    </div>
+                </div>
+                
+                <div class="step-page">
+                    <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">What happens next?</h2>
+                    <p style="font-size:0.85rem; line-height:1.6; opacity:0.8;">We will safely perform the following on your behalf:</p>
+                    <ul style="font-size:0.85rem; line-height:1.6; opacity:0.8; padding-left:20px; margin-bottom:20px;">
+                        <li>Fork the NikGApps/Config repository to your account (<span id="gh-username-display" style="font-weight:bold;color:var(--accent)"></span>).</li>
+                        <li>Upload your config file to the correct Android folder.</li>
+                        <li>Create a Pull Request to the official repository.</li>
+                    </ul>
+                    <div class="modal-btns">
+                        <button class="modal-btn" onclick="moveStep(1)">Back</button>
+                        <button class="modal-btn primary" onclick="startForking()">Clone Config Directory</button>
+                    </div>
+                </div>
+
+                <div class="step-page">
+                    <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Cloning Repository</h2>
+                    <p id="fork-status" style="font-size:0.9rem; line-height:1.6; opacity:0.8; margin-bottom:15px;">Forking NikGApps/Config to your account...</p>
+                    <div style="width:100%; height:8px; background:rgba(var(--accent-rgb),0.2); border-radius:4px; overflow:hidden; margin-bottom:20px;">
+                        <div id="fork-progress" style="width:0%; height:100%; background:var(--accent); transition:width 0.4s;"></div>
+                    </div>
+                    <div class="modal-btns">
+                        <button class="modal-btn primary" id="btn-next-upload" style="display:none;" onclick="startUpload()">Put Config into Folder</button>
+                    </div>
+                </div>
+
+                <div class="step-page">
+                    <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Uploading Config</h2>
+                    <p id="upload-status" style="font-size:0.9rem; line-height:1.6; opacity:0.8; margin-bottom:20px;">Committing file to your repository...</p>
+                    <div class="modal-btns">
+                        <button class="modal-btn primary" id="btn-next-pr" style="display:none;" onclick="startPR()">Do a Pull Request</button>
+                    </div>
+                </div>
+
+                <div class="step-page">
+                    <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Creating Pull Request</h2>
+                    <p id="pr-status" style="font-size:0.9rem; line-height:1.6; opacity:0.8; margin-bottom:20px;">Sending request to maintainers...</p>
+                    <div class="modal-btns">
+                        <button class="modal-btn primary" id="btn-finish-auto" style="display:none;" onclick="finishAuto()">Finish</button>
+                    </div>
+                </div>
+
+                <div class="step-page">
+                    <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">All Done! 🎉</h2>
+                    <p style="font-size:0.9rem; line-height:1.6; opacity:0.8; margin-bottom:15px;">Your config has been requested. Please wait up to 30 minutes for it to be processed.</p>
+                    <p style="font-size:0.8rem; line-height:1.6; opacity:0.7; margin-bottom:15px;">You can check for your release file on SourceForge below. (Look for the latest date).</p>
+                    <a href="https://sourceforge.net/projects/nikgapps/files/Releases/NikGApps-Config/" target="_blank" class="modal-btn primary" style="display:block; margin-bottom:20px;">Open SourceForge</a>
+                    <div class="modal-btns">
+                        <button class="modal-btn" onclick="closeModal()">Close</button>
+                    </div>
+                </div>
+
+                <!-- MANUAL METHOD STEPS (7-12) -->
                 <div class="step-page">
                     <h2 style="color:var(--accent-text); margin-bottom:10px; font-weight:800;">Step 1: Open GitHub</h2>
                     <p style="font-size:0.9rem; line-height:1.4; opacity:0.8; margin-bottom:15px;">Login to GitHub and open the NikGApps repository.</p>
                     <a href="https://github.com/NikGApps/Config" target="_blank" class="modal-btn primary" style="display:block; margin-bottom:20px;">Open NikGApps Repo →</a>
-                    <div class="modal-btns"><button class="modal-btn" onclick="moveStep(0)">Back</button><button class="modal-btn primary" onclick="moveStep(2)">Next</button></div>
+                    <div class="modal-btns"><button class="modal-btn" onclick="moveStep(0)">Back</button><button class="modal-btn primary" onclick="moveStep(8)">Next</button></div>
                 </div>
                 <div class="step-page">
                     <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Step 2: Forking</h2>
                     <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Click the 'Fork' button to create your own copy of the repository.</p>
-                    <div class="modal-btns"><button class="modal-btn" onclick="moveStep(1)">Back</button><button class="modal-btn primary" onclick="moveStep(3)">Next</button></div>
+                    <div class="modal-btns"><button class="modal-btn" onclick="moveStep(7)">Back</button><button class="modal-btn primary" onclick="moveStep(9)">Next</button></div>
                 </div>
                 <div class="step-page">
                     <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Step 3: Branching</h2>
                     <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">(Optional) Create a new branch named 'my-config' for your changes.</p>
-                    <div class="modal-btns"><button class="modal-btn" onclick="moveStep(2)">Back</button><button class="modal-btn primary" onclick="moveStep(4)">Next</button></div>
+                    <div class="modal-btns"><button class="modal-btn" onclick="moveStep(8)">Back</button><button class="modal-btn primary" onclick="moveStep(10)">Next</button></div>
                 </div>
                 <div class="step-page">
                     <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Step 4: Uploading</h2>
                     <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Go to your Android folder and upload your new .config file.</p>
-                    <div class="modal-btns"><button class="modal-btn" onclick="moveStep(3)">Back</button><button class="modal-btn primary" onclick="moveStep(5)">Next</button></div>
+                    <div class="modal-btns"><button class="modal-btn" onclick="moveStep(9)">Back</button><button class="modal-btn primary" onclick="moveStep(11)">Next</button></div>
                 </div>
                 <div class="step-page">
                     <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Step 5: Commit</h2>
                     <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Write a message like "Update my config" and commit the changes.</p>
-                    <div class="modal-btns"><button class="modal-btn" onclick="moveStep(4)">Back</button><button class="modal-btn primary" onclick="moveStep(6)">Next</button></div>
+                    <div class="modal-btns"><button class="modal-btn" onclick="moveStep(10)">Back</button><button class="modal-btn primary" onclick="moveStep(12)">Next</button></div>
                 </div>
                 <div class="step-page">
                     <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">Final Step</h2>
                     <p style="font-size:0.9rem; line-height:1.6; opacity:0.8;">Submit a Pull Request. The maintainers will review your config! 🎉</p>
-                    <div class="modal-btns"><button class="modal-btn" onclick="moveStep(5)">Back</button><button class="modal-btn primary" onclick="closeModal()">Done!</button></div>
+                    <div class="modal-btns"><button class="modal-btn" onclick="moveStep(11)">Back</button><button class="modal-btn primary" onclick="closeModal()">Done!</button></div>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal-overlay" id="token-guide-modal" style="z-index: 2005;">
+    <div class="modal-card">
+        <div class="modal-close" onclick="closeTokenGuide()"><i data-lucide="x"></i></div>
+        <h2 style="color:var(--accent-text); margin-bottom:15px; font-weight:800;">How to make a Token</h2>
+        <div style="font-size:0.85rem; line-height:1.6; opacity:0.8; max-height: 60vh; overflow-y:auto; padding-right:10px;">
+            <ol style="padding-left:15px; margin-bottom:15px;">
+                <li style="margin-bottom:8px;">Create an account on <a href="https://github.com/join" target="_blank" style="color:var(--accent); font-weight:bold;">GitHub</a> if you haven't already.</li>
+                <li style="margin-bottom:8px;">Go to your GitHub <a href="https://github.com/settings/tokens" target="_blank" style="color:var(--accent); font-weight:bold;">Personal Access Tokens (classic)</a> page.</li>
+                <li style="margin-bottom:8px;">Click on <strong>Generate new token</strong> -> <strong>Generate new token (classic)</strong>.</li>
+                <li style="margin-bottom:8px;">In the <strong>Note</strong> field, type something like "NikGApps Config".</li>
+                <li style="margin-bottom:8px;">Under <strong>Select scopes</strong>, check the box next to <strong>public_repo</strong>. (Required to fork the repository and upload your file).</li>
+                <li style="margin-bottom:8px;">Scroll to the bottom and click <strong>Generate token</strong>.</li>
+                <li style="margin-bottom:8px;"><strong>Copy</strong> the generated token (starts with `ghp_`). <em>You won't be able to see it again!</em></li>
+                <li>Paste the token into the text field here.</li>
+            </ol>
+        </div>
+        <div class="modal-btns">
+            <button class="modal-btn primary" onclick="closeTokenGuide()">Got it</button>
         </div>
     </div>
 </div>
@@ -1319,6 +1409,12 @@ function analyzeConfig(input) {
     reader.readAsText(file);
 }
 
+let windowConfigData = "";
+let windowConfigName = "";
+let windowOsVersion = "";
+let githubToken = "";
+let githubUser = "";
+
 function buildConfig() {
     let output = "";
     const allInputs = document.querySelectorAll('input[type="checkbox"]');
@@ -1333,6 +1429,11 @@ function buildConfig() {
         output += updatedLine + "\n";
     });
     const name = document.getElementById('file-name').value || 'nikgapps';
+    
+    windowConfigData = output;
+    windowConfigName = name;
+    windowOsVersion = document.getElementById('title-os').innerText.replace('Android ', '').trim();
+
     const blob = new Blob([output], { type: 'application/octet-stream' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
@@ -1342,7 +1443,6 @@ function buildConfig() {
     setTimeout(() => {
         const modal = document.getElementById('guidance-modal');
         modal.style.display = 'flex';
-        // Allow rendering frame before fading in for smooth transition
         requestAnimationFrame(() => modal.classList.add('show'));
         moveStep(0);
         lucide.createIcons();
@@ -1350,7 +1450,7 @@ function buildConfig() {
 }
 
 function moveStep(idx) {
-    document.getElementById('step-slider').style.transform = `translateX(-${idx * 14.285}%)`;
+    document.getElementById('step-slider').style.transform = `translateX(-${idx * 7.6923}%)`;
     document.querySelectorAll('.step-page').forEach((p, i) => p.classList.toggle('active', i === idx));
 }
 
@@ -1358,6 +1458,219 @@ function closeModal() {
     const modal = document.getElementById('guidance-modal');
     modal.classList.remove('show');
     setTimeout(() => modal.style.display = 'none', 300);
+}
+
+function openTokenGuide() {
+    const tm = document.getElementById('token-guide-modal');
+    tm.style.display = 'flex';
+    requestAnimationFrame(() => tm.classList.add('show'));
+}
+
+function closeTokenGuide() {
+    const tm = document.getElementById('token-guide-modal');
+    tm.classList.remove('show');
+    setTimeout(() => tm.style.display = 'none', 300);
+}
+
+async function verifyToken() {
+    const tokenInput = document.getElementById('gh-token-input').value.trim();
+    const errorEl = document.getElementById('token-error');
+    if (!tokenInput) {
+        errorEl.innerText = "Please enter a token.";
+        errorEl.style.display = "block";
+        return;
+    }
+    const btn = document.getElementById('btn-verify-token');
+    btn.innerText = "Checking...";
+    btn.disabled = true;
+    
+    try {
+        const res = await fetch("https://api.github.com/user", {
+            headers: { "Authorization": `token ${tokenInput}` }
+        });
+        if (res.ok) {
+            const data = await res.json();
+            githubToken = tokenInput;
+            githubUser = data.login;
+            document.getElementById('gh-username-display').innerText = githubUser;
+            errorEl.style.display = "none";
+            moveStep(2);
+        } else {
+            errorEl.innerText = "Invalid token. Make sure it has public_repo scope.";
+            errorEl.style.display = "block";
+        }
+    } catch(e) {
+        errorEl.innerText = "Network error.";
+        errorEl.style.display = "block";
+    }
+    btn.innerText = "Start";
+    btn.disabled = false;
+}
+
+async function startForking() {
+    moveStep(3);
+    const prog = document.getElementById('fork-progress');
+    const status = document.getElementById('fork-status');
+    prog.style.width = '30%';
+    document.getElementById('btn-next-upload').style.display = "none";
+    status.innerText = "Forking NikGApps/Config to your account...";
+    
+    try {
+        const forkRes = await fetch("https://api.github.com/repos/NikGApps/Config/forks", {
+            method: "POST",
+            headers: {
+                "Authorization": `token ${githubToken}`,
+                "Accept": "application/vnd.github.v3+json"
+            }
+        });
+        
+        prog.style.width = '60%';
+        status.innerText = "Waiting for fork to complete...";
+        
+        let ready = false;
+        for(let i=0; i<8; i++) {
+            await new Promise(r => setTimeout(r, 2000));
+            const chk = await fetch(`https://api.github.com/repos/${githubUser}/Config`, {
+                headers: { "Authorization": `token ${githubToken}` }
+            });
+            if (chk.ok) {
+                ready = true;
+                break;
+            }
+        }
+        
+        prog.style.width = '100%';
+        if (ready) {
+            status.innerText = "Repository cloned successfully!";
+        } else {
+            status.innerText = "Fork took too long. You can try proceeding anyway.";
+        }
+        document.getElementById('btn-next-upload').style.display = "block";
+    } catch(e) {
+        status.innerText = "Error forking repository.";
+        document.getElementById('btn-next-upload').style.display = "block";
+    }
+}
+
+async function startUpload() {
+    moveStep(4);
+    const status = document.getElementById('upload-status');
+    status.innerText = "Uploading to " + windowOsVersion + " folder...";
+    document.getElementById('btn-next-pr').style.display = "none";
+    
+    try {
+        const contentBase64 = btoa(unescape(encodeURIComponent(windowConfigData)));
+        const path = `${windowOsVersion}/${windowConfigName}.config`;
+        
+        let sha = null;
+        const getRes = await fetch(`https://api.github.com/repos/${githubUser}/Config/contents/${path}`, {
+            headers: { "Authorization": `token ${githubToken}` }
+        });
+        if (getRes.ok) {
+            const data = await getRes.json();
+            sha = data.sha;
+        }
+        
+        const body = {
+            message: `Update ${windowConfigName}.config for Android ${windowOsVersion}`,
+            content: contentBase64,
+            branch: "master"
+        };
+        if (sha) body.sha = sha;
+        
+        const putRes = await fetch(`https://api.github.com/repos/${githubUser}/Config/contents/${path}`, {
+            method: "PUT",
+            headers: {
+                "Authorization": `token ${githubToken}`,
+                "Content-Type": "application/json",
+                "Accept": "application/vnd.github.v3+json"
+            },
+            body: JSON.stringify(body)
+        });
+        
+        if (putRes.ok || putRes.status === 201 || putRes.status === 200) {
+            status.innerText = "File uploaded successfully!";
+            document.getElementById('btn-next-pr').style.display = "block";
+        } else {
+            body.branch = "main";
+            const putRes2 = await fetch(`https://api.github.com/repos/${githubUser}/Config/contents/${path}`, {
+                method: "PUT",
+                headers: {
+                    "Authorization": `token ${githubToken}`,
+                    "Content-Type": "application/json",
+                    "Accept": "application/vnd.github.v3+json"
+                },
+                body: JSON.stringify(body)
+            });
+            if(putRes2.ok || putRes2.status === 201 || putRes2.status === 200) {
+                 status.innerText = "File uploaded successfully!";
+                 document.getElementById('btn-next-pr').style.display = "block";
+            } else {
+                 const err = await putRes2.json();
+                 status.innerText = "Upload failed: " + (err.message || "Unknown error");
+            }
+        }
+    } catch(e) {
+        status.innerText = "Error uploading file.";
+    }
+}
+
+async function startPR() {
+    moveStep(5);
+    const status = document.getElementById('pr-status');
+    status.innerText = "Submitting Pull Request...";
+    document.getElementById('btn-finish-auto').style.display = "none";
+    
+    try {
+        const prBody = {
+            title: `Add ${windowConfigName}.config for Android ${windowOsVersion}`,
+            body: "Automated config submission via NikGApps Configurator.",
+            head: `${githubUser}:master`,
+            base: "master"
+        };
+        
+        let prRes = await fetch("https://api.github.com/repos/NikGApps/Config/pulls", {
+            method: "POST",
+            headers: {
+                "Authorization": `token ${githubToken}`,
+                "Content-Type": "application/json",
+                "Accept": "application/vnd.github.v3+json"
+            },
+            body: JSON.stringify(prBody)
+        });
+        
+        if (!prRes.ok) {
+            prBody.head = `${githubUser}:main`;
+            prBody.base = "main";
+            prRes = await fetch("https://api.github.com/repos/NikGApps/Config/pulls", {
+                method: "POST",
+                headers: {
+                    "Authorization": `token ${githubToken}`,
+                    "Content-Type": "application/json",
+                    "Accept": "application/vnd.github.v3+json"
+                },
+                body: JSON.stringify(prBody)
+            });
+        }
+        
+        if (prRes.ok || prRes.status === 422) {
+            status.innerText = "Pull Request successfully created!";
+            document.getElementById('btn-finish-auto').style.display = "block";
+        } else {
+            const err = await prRes.json();
+            status.innerText = "PR failed: " + (err.message || "Unknown error");
+            document.getElementById('btn-finish-auto').style.display = "block";
+        }
+    } catch(e) {
+        status.innerText = "Error creating Pull Request.";
+        document.getElementById('btn-finish-auto').style.display = "block";
+    }
+}
+
+function finishAuto() {
+    document.getElementById('gh-token-input').value = "";
+    githubToken = "";
+    moveStep(6);
 }
 
 // Init everything
