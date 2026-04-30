@@ -3138,13 +3138,6 @@
                         if (checkbox.checked) row.classList.remove('disabled-visual');
                         else row.classList.add('disabled-visual');
                     });
-                    const parentKey = checkbox.getAttribute('data-key');
-                    if (parentKey === 'SetupWizard' && checkbox.checked) {
-                        const pixelSw = document.querySelector('input[data-key="PixelSetupWizard"]');
-                        if (pixelSw && pixelSw.checked) {
-                            pixelSw.checked = false;
-                        }
-                    }
                 }
             }
             handleExclusiveToggles(index);
@@ -3157,8 +3150,8 @@
             const exclusivePairs = {
                 'Core': 'CoreGo',
                 'CoreGo': 'Core',
-                '>>SetupWizard': 'PixelSetupWizard',
-                'PixelSetupWizard': '>>SetupWizard'
+                'SetupWizard': 'PixelSetupWizard',
+                'PixelSetupWizard': 'SetupWizard'
             };
 
             if (currentInput.checked && exclusivePairs[currentKey]) {
@@ -3169,27 +3162,39 @@
                     otherInput.checked = false;
                     const otherId = otherInput.id.split('-')[1];
                     const isSub = otherInput.closest('.gapps-item').classList.contains('sub-row');
-                    if (!isSub) handleToggle(otherId, false);
+                    if (!isSub) {
+                        if (targetKey !== 'SetupWizard') {
+                            handleToggle(otherId, false);
+                        }
+                    }
                 }
             }
 
-            if (currentKey === 'PixelSetupWizard' && currentInput.checked) {
+            if (currentKey === 'PixelSetupWizard') {
                 const swParentInput = document.querySelector('input[data-key="SetupWizard"]');
                 if (swParentInput) {
-                    swParentInput.checked = true;
                     const swParentId = swParentInput.id.split('-')[1];
                     const subGroup = document.getElementById(`sub-of-${swParentId}`);
-                    if (subGroup) {
-                        subGroup.querySelectorAll('input').forEach(child => {
-                            child.disabled = false;
-                            const cKey = child.getAttribute('data-key');
-                            if (cKey === '>>SetupWizard') {
-                                child.checked = false;
-                            } else {
+                    
+                    if (currentInput.checked) {
+                        swParentInput.checked = false;
+                        if (subGroup) {
+                            subGroup.querySelectorAll('input').forEach(child => {
+                                child.disabled = false;
                                 child.checked = true;
+                                child.closest('.gapps-item').classList.remove('disabled-visual');
+                            });
+                        }
+                    } else {
+                        if (!swParentInput.checked) {
+                            if (subGroup) {
+                                subGroup.querySelectorAll('input').forEach(child => {
+                                    child.disabled = true;
+                                    child.checked = false;
+                                    child.closest('.gapps-item').classList.add('disabled-visual');
+                                });
                             }
-                            child.closest('.gapps-item').classList.remove('disabled-visual');
-                        });
+                        }
                     }
                 }
             }
