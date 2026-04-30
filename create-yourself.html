@@ -3336,10 +3336,26 @@
 
         function switchAndLoad(os) {
             closeImportModal();
-            let folder = os.replace('.', '');
-            let currentPath = window.location.pathname;
-            let currentFile = currentPath.substring(currentPath.lastIndexOf('/') + 1) || 'create-yourself().html';
-            window.location.href = `../template${folder}/${currentFile}`;
+            
+            const links = document.querySelectorAll('#os-list .sidebar-link');
+            let targetEl = null;
+            links.forEach(link => {
+                if (link.innerText.trim() === `Android ${os}`) {
+                    targetEl = link;
+                }
+            });
+            if (!targetEl) targetEl = document.createElement('a');
+
+            document.querySelectorAll('.sidebar-link').forEach(i => i.classList.remove('active'));
+            targetEl.classList.add('active');
+            document.getElementById('title-os').innerText = `Android ${os}`;
+            
+            triggerFolderLoader(async () => {
+                await loadTemplate(os);
+                processImportedLines();
+            });
+            
+            if (window.innerWidth < 1000) toggleSidebar();
         }
 
         function forceLoadCurrent() {
